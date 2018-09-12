@@ -90,12 +90,23 @@ tr:nth-child(even) {
     cursor: pointer;
 }
 
+button {
+    background-color: #A9F5F2;
+    color: rgb(245, 16, 195);
+    float: left;
+    margin: 20px;
+    height: 30px;
+    width: 100px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
 
 .footer {
     color: #000000;
     background-color: rgb(245, 16, 195);
     text-align: center;
-    position: float;
+    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;

@@ -50,7 +50,10 @@
                     <label for="psw"><b>Password</b></label><br>
                     <input type="password" placeholder="Enter Password" name="psw" required><br>
                 
-                    <button type="submit">Sign In</button><br>
+                    <p>Admin<input type="radio" class="radio" name="phiona" value="admin" id="admin"></p>
+                    <p>User<input type="radio" name="phiona" value="user" id="user"></p>
+                    <button type="submit" class="button" onclick="SelectUser()" >Sign In</button>
+                    
                     <label>
                       <input type="checkbox" checked="checked" name="remember"> Remember me<br>
                     </label>
