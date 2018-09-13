@@ -42,32 +42,38 @@
     </header>
 
     <div class="container">
-            <section>
-                <div class="sign_in">
-                    <label for="uname"><b>Username</b></label><br>
-                    <input type="text" placeholder="Enter Username" name="uname" required><br>
+        <form method = "POST">
+            <table align = left>
+
+                <tr>
+                    <div class = "Fields">
+                        <td><span> Username: </span></td>
+                        <td><input type = "text" name = "username" placeholder = "Enter Username Name"><br></td>
+                    </div>
+                </tr>
+
+                <tr> 
+                    <div class="fields">
+                        <td><span>Password:</span></td>
+                        <td><input type = "text" name = "password" placeholder = "Enter Password"><br></td>
+                    </div>
+                </tr>
+
+                <td> <button type="submit" class="button" onclick="SelectUser()" >Sign In</button> <br> <br></td>
                 
-                    <label for="psw"><b>Password</b></label><br>
-                    <input type="password" placeholder="Enter Password" name="psw" required><br>
-                
-                    <p>Admin<input type="radio" class="radio" name="phiona" value="admin" id="admin"></p>
-                    <p>User<input type="radio" name="phiona" value="user" id="user"></p>
-                    <button type="submit" class="button" onclick="SelectUser()" >Sign In</button>
-                    
-                    <label>
-                      <input type="checkbox" checked="checked" name="remember"> Remember me<br>
-                    </label>
-                </div>
-    
-                <p class="center_text">Don't have account? <a href="sign_up.html">Click here.</a></p>
+
+                <tr>
+                    <td> <p class="center_text">Don't have account? <a href="sign_up.html">Click here.</a></p> </td>
+                </tr>
+
+            </table>
+        </form>   
+        </div>
+
+           
     
         
-    
-                    
-    
-        </section>
-          </div>
-        </div>
+
     
             
         <div class="footer">
