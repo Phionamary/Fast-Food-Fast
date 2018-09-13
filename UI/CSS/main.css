@@ -8,7 +8,7 @@
 }
     
 #nav {
-    color: rgb(245, 16, 195);
+    color: #08088A;
     padding: 20px;
     text-align: center;
 }
@@ -18,12 +18,12 @@ header {
     color: #131111;
     padding-top: 30px;
     min-height: 70px;
-    border-bottom: #4CAF50 3px solid;
+    border-bottom: #DF0101 3px solid;
 
 }
 
 header a {
-    color: rgb(245, 16, 195);
+    color: #08088A;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 16px;
@@ -54,8 +54,8 @@ ul{
 
 }
 
-boxes a {
-    color: rgb(245, 16, 195);
+box a {
+    color: #FF8000;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 16px;
@@ -63,20 +63,21 @@ boxes a {
 }
 
 
-boxes li{
+box li{
 
+    color: #FF8000;
     display: inline;
     padding: 0 20px 0 20px;
 }
 
 
-boxes .highlight, header .current a{
-    color: #131111;
+box .highlight, header .current a{
+    color: #FF8000;
     font-weight: bold;
 }
 
-boxes a:hover{
-    color: #131111;
+box a:hover{
+    color: #FF8000;
     font-weight: bold;
 }
 
@@ -89,6 +90,5 @@ boxes a:hover{
     bottom: 0;
     width: 100%;
     height: 50px;
-    color: white;
     text-align: center;
 }
