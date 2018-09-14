@@ -7,8 +7,10 @@
     }
 }
     
+
+
 #nav {
-    color: rgb(245, 16, 195);
+    color: #08088A;
     padding: 20px;
     text-align: center;
 }
@@ -18,12 +20,12 @@ header {
     color: #131111;
     padding-top: 30px;
     min-height: 70px;
-    border-bottom: #4CAF50 3px solid;
+    border-bottom: #DF0101 3px solid;
 
 }
 
 header a {
-    color: rgb(245, 16, 195);
+    color: #08088A;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 16px;
@@ -39,6 +41,7 @@ header nav {
     float: right;
     margin-top: 10px;
 }
+
 
 ul{
     margin: 0;
@@ -89,13 +92,12 @@ input{
 
 .footer {
     color: #000000;
-    background-color: rgb(245, 16, 195);
+    background-color: #F781F3;
     text-align: center;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     height: 50px;
-    color: white;
     text-align: center;
 }
