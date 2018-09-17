@@ -13,8 +13,8 @@ def _get_order(Request_ID):
     return [order for order in orders if order['Request_ID'] == Request_ID]
 
 
-def _record_exists(Client_Name):
-    return [order for order in orders if order["Client_Name"] == Client_Name]
+def _record_exists(Request_ID):
+    return [order for order in orders if order["Request_ID"] == Request_ID]
 
 
 @app.errorhandler(404)
@@ -45,18 +45,28 @@ def create_new_order():
     if not request.json or 'Client_Name' not in request.json or 'Quantity' not in request.json:
         abort(400)
     order_id = orders[-1].get("Request_ID") + 1
-    Client_Name = request.json.get('Client_Name')
-    if _record_exists(Client_Name):
+
+    Request_ID = request.json.get('Request_ID')
+    if _record_exists(Request_ID):
         abort(400)
+
+    Client_Name = request.json.get('Client_Name')
+
     Quantity = request.json.get('Quantity')
     if type(Quantity) is not int:
         abort(400)
+
     Restaurant = request.json.get('Restaurant')
+
     Detail = request.json.get('Detail')
-    Date = request.json.get('Date')
-    if type(Date) is not datetime:
-        abort(400)
+
+    #Date = request.json.get('Date')
+    Date = datetime.datetime.now()
+    '''if type(Date) is not datetime:
+        abort(400)'''
+
     Actions = request.json.get('Actions')
+    
     order = {'Request_ID': order_id,'Client_Name': Client_Name,'Restaurant': Restaurant, 'Detail':Detail, 'Quantity': Quantity, 'Date':Date, 'Actions': Actions}
     orders.append(order)
     return jsonify({'order': order}), 201
