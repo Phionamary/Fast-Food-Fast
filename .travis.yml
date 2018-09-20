@@ -10,7 +10,7 @@ before_script:
 - pip3 install -r requirements.txt
     
 script:
-- pytest -v --cov app --cov-report term-missing
+- py.test --cov=rest_api/tests.py
 
 
 after_success:
