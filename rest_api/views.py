@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, abort, make_response, request
-from models import orders 
 import datetime
+
+from .models import orders
 
 NOT_FOUND = 'Not found'
 BAD_REQUEST = 'Bad request'
@@ -27,12 +28,12 @@ def bad_request(error):
     return make_response(jsonify({'error': BAD_REQUEST}), 400)
 
 
-@app.route('/api/v1.0/orders', methods=['GET'])
+@app.route('/api/v1/orders', methods=['GET'])
 def get_all_orders():
     return jsonify({'orders': orders})
 
 
-@app.route('/api/v1.0/orders/<int:Request_ID>', methods=['GET'])
+@app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
 def get_particular_order(Request_ID):
     order = _get_order(Request_ID)
     if not order:
@@ -40,7 +41,7 @@ def get_particular_order(Request_ID):
     return jsonify({'orders': order})
 
 
-@app.route('/api/v1.0/orders', methods=['POST'])
+@app.route('/api/v1/orders', methods=['POST'])
 def create_new_order():
     if not request.json or 'Client_Name' not in request.json or 'Quantity' not in request.json:
         abort(400)
@@ -72,22 +73,19 @@ def create_new_order():
     return jsonify({'order': order}), 201
 
 
-@app.route('/api/v1.0/orders/<int:Request_ID>', methods=['PUT'])
+@app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
 def update_order_status(Request_ID):
     order = _get_order(Request_ID)
     if len(order) == 0:
         abort(404)
     if not request.json:
         abort(400)
-    Client_Name = request.json.get('Client_Name', order[0]['Client_Name'])
     Actions = request.json.get('Actions', order[0]['Actions'])
-
-    Client_Name[0]['Client_Name'] = Client_Name
     Actions[0]['Actions'] = Actions
     return jsonify({'order': order[0]}), 200
 
 
-@app.route('/api/v1.0/orders/<int:Request_ID>', methods=['DELETE'])
+@app.route('/api/v1/orders/<int:Request_ID>', methods=['DELETE'])
 def delete_order(Request_ID):
     order = _get_order(Request_ID)
     if len(order) == 0:

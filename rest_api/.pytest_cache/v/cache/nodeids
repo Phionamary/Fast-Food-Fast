@@ -1,0 +1,8 @@
+[
+  "tests.py::TestFlaskApi::test_get_all",
+  "tests.py::TestFlaskApi::test_get_one",
+  "tests.py::TestFlaskApi::test_item_not_exist",
+  "tests.py::TestFlaskApi::test_post",
+  "tests.py::TestFlaskApi::test_update",
+  "tests.py::TestFlaskApi::test_update_error"
+]
