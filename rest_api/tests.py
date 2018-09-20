@@ -76,8 +76,6 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code, 500)
         data = json.loads(response.get_data())
         self.assertEqual(data["order"]["Actions"], "Pending")
-        # proof need for deepcopy in setUp: update app.orders should not affect self.backup_orders
-        # this fails when you use shallow copy
         self.assertEqual(self.backup_orders["Pending"]['Actions'], "Approved")  
 
     def test_update_error(self):
