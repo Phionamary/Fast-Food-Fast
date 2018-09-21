@@ -80,8 +80,12 @@ def update_order_status(Request_ID):
         abort(404)
     if not request.json:
         abort(400)
+
+    Detail = request.json.get('Detail', order[0]['Detail'])
     Actions = request.json.get('Actions', order[0]['Actions'])
-    Actions[0]['Actions'] = Actions
+
+    order[0]['Detail'] = Detail
+    order[0]['Actions'] = Actions
     return jsonify({'order': order[0]}), 200
 
 
