@@ -10,3 +10,4 @@ The link to git hub feature branch with the code is: https://github.com/Phionama
 
 [![Build Status](https://travis-ci.org/Phionamary/Fast-Food-Fast.svg?branch=Feature)](https://travis-ci.org/Phionamary/Fast-Food-Fast)
 [![Coverage Status](https://coveralls.io/repos/github/Phionamary/Fast-Food-Fast/badge.svg?branch=Feature)](https://coveralls.io/github/Phionamary/Fast-Food-Fast?branch=Feature)
+[![Maintainability](https://api.codeclimate.com/v1/badges/14ceda9d0603ab17f897/maintainability)](https://codeclimate.com/github/Phionamary/Fast-Food-Fast/maintainability)
