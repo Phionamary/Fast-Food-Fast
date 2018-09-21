@@ -30,8 +30,8 @@ def bad_request(error):
 
 @app.route('/api/v1/orders', methods=['GET'])
 def get_all_orders():
-    return jsonify({'orders': orders})
-
+    
+    response = jsonify({'orders': orders})
     if len(orders) == 0:
         return jsonify({'message': 'No orders have been placed yet'})
     return response
