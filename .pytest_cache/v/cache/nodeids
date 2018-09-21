@@ -1,8 +1,8 @@
 [
-  "rest_api/tests.py::TestFlaskApi::test_get_all",
-  "rest_api/tests.py::TestFlaskApi::test_get_one",
-  "rest_api/tests.py::TestFlaskApi::test_item_not_exist",
-  "rest_api/tests.py::TestFlaskApi::test_post",
-  "rest_api/tests.py::TestFlaskApi::test_update",
-  "rest_api/tests.py::TestFlaskApi::test_update_error"
+  "Tests/test_routes.py::TestFlaskApi::test_get_all",
+  "Tests/test_routes.py::TestFlaskApi::test_get_one",
+  "Tests/test_routes.py::TestFlaskApi::test_item_not_exist",
+  "Tests/test_routes.py::TestFlaskApi::test_post",
+  "Tests/test_routes.py::TestFlaskApi::test_update",
+  "Tests/test_routes.py::TestFlaskApi::test_update_error"
 ]

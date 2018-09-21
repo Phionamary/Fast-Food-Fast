@@ -1,3 +1,4 @@
 {
+  "Tests/test_routes.py::TestFlaskApi::test_update": true,
   "rest_api/tests.py::TestFlaskApi::test_update": true
 }
