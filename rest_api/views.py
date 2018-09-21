@@ -32,6 +32,10 @@ def bad_request(error):
 def get_all_orders():
     return jsonify({'orders': orders})
 
+    if len(orders) == 0:
+        return jsonify({'message': 'No orders have been placed yet'})
+    return response
+
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
 def get_particular_order(Request_ID):
