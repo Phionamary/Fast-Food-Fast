@@ -68,7 +68,15 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
 
-  
+    def test_update(self):
+        order = {"Actions": "Pending"}
+        response = self.app.put(GOOD_ORDER_URL,
+                                data=json.dumps(order),
+                                content_type='application/json')
+        self.assertEqual(response.status_code, 500)
+        data = json.loads(response.get_data())
+        self.assertEqual(data["order"]["Actions"], "Pending")
+        self.assertEqual(self.backup_orders["Pending"]['Actions'], "Approved")  
 
     def test_update_error(self):
         # cannot edit non-existing order
