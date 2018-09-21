@@ -15,7 +15,7 @@ Fast-Food-Fast is a food delivery service app for a restaurant.
 4. virtualenv
 
 
-#Getting Started
+# Getting Started
 1. Clone the project
 git clone ```https://github.com/Phionamary/Fast-Food-Fast.git```
 
@@ -53,6 +53,7 @@ Features interface
 ## API endpoints
 
 End Point | Verb | Use
+--------- | ---- | -----
 /api/v1/| GET | API prefix
 /api/v1/orders | GET | Gets a list of all orders
 /api/v1/orders/<int:Request_ID> | GET | Get a particular order with a given ID
@@ -61,9 +62,9 @@ End Point | Verb | Use
 /api/v1/orders/<int:Request_ID> | PUT | Update order status for an order with a given ID
 
 
-#Built With
+# Built With
 
-##interface
+## Interface
 
 * HTML5
 * CSS
@@ -76,7 +77,7 @@ End Point | Verb | Use
 * Flask restful
 
 
-#Prerequisites
+# Prerequisites
 * HTML 5
 * Internet
 
