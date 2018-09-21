@@ -23,7 +23,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.get(BASE_URL)
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(data['orders']), 6)
+        self.assertEqual(len(data['orders']), 4)
 
     def test_get_one(self):
         response = self.app.get(BASE_URL)
@@ -33,7 +33,7 @@ class TestFlaskApi(unittest.TestCase):
 
     def test_item_not_exist(self):
         response = self.app.get(BAD_ORDER_URL)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
     def test_post(self):
         # missing value field = bad
@@ -73,7 +73,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.put(GOOD_ORDER_URL,
                                 data=json.dumps(order),
                                 content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
         data = json.loads(response.get_data())   
 
     def test_update_error(self):
@@ -82,14 +82,20 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.put(BAD_ORDER_URL,
                                 data=json.dumps(order),
                                 content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
         # Actions field cannot take int
         order = {"Actions": 5}
         response = self.app.put(GOOD_ORDER_URL,
                                 data=json.dumps(order),
                                 content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete(self):
+        response = self.app.delete(GOOD_ORDER_URL)
+        self.assertEqual(response.status_code, 204)
+        response = self.app.delete(BAD_ORDER_URL)
+        self.assertEqual(response.status_code, 204)
 
 
     def tearDown(self):
