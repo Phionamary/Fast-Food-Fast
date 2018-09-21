@@ -3,6 +3,5 @@
   "Tests/test_routes.py::TestFlaskApi::test_get_one",
   "Tests/test_routes.py::TestFlaskApi::test_item_not_exist",
   "Tests/test_routes.py::TestFlaskApi::test_post",
-  "Tests/test_routes.py::TestFlaskApi::test_update",
   "Tests/test_routes.py::TestFlaskApi::test_update_error"
 ]
