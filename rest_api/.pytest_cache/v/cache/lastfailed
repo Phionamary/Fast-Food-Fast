@@ -1,0 +1,4 @@
+{
+  "tests.py::TestFlaskApi::test_delete": true,
+  "tests.py::TestFlaskApi::test_update": true
+}
