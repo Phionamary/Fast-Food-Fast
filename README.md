@@ -52,7 +52,7 @@ Features interface
 
 ## API endpoints
 
-End Point | Verb | Use
+END POINT | METHOD | USE
 --------- | ---- | -----
 /api/v1/| GET | API prefix
 /api/v1/orders | GET | Gets a list of all orders
