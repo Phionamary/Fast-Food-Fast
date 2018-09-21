@@ -1,0 +1,3 @@
+{
+  "rest_api/tests.py::TestFlaskApi::test_update": true
+}
