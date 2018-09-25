@@ -1,14 +1,14 @@
 from flask import Flask, jsonify, abort, make_response, request
 import datetime
 
+
 from .models import orders
 
 NOT_FOUND = 'Not found'
 BAD_REQUEST = 'Bad request'
 
-app = Flask(__name__)
 
-
+app = Flask (__name__)
 
 def _get_order(Request_ID):
     return [order for order in orders if order['Request_ID'] == Request_ID]
@@ -47,6 +47,8 @@ def get_particular_order(Request_ID):
 
 @app.route('/api/v1/orders', methods=['POST'])
 def create_new_order():
+    if len(orders) == 0:
+        abort(400)
     if not request.json or 'Client_Name' not in request.json or 'Quantity' not in request.json:
         abort(400)
     order_id = orders[-1].get("Request_ID") + 1
@@ -56,14 +58,26 @@ def create_new_order():
         abort(400)
 
     Client_Name = request.json.get('Client_Name')
+    if len (Client_Name) ==0:
+        abort(400)
+    if Client_Name == " ":
+        abort(400)
+    if Client_Name ==  "Some_Name":
+        abort(400)
 
     Quantity = request.json.get('Quantity')
     if type(Quantity) is not int:
         abort(400)
 
     Restaurant = request.json.get('Restaurant')
+    if type(Restaurant) is not str:
+        abort(400)
 
     Detail = request.json.get('Detail')
+    if type(Detail) is not str:
+        abort(400)
+    if Detail == " ":
+        abort(400)
 
     #Date = request.json.get('Date')
     Date = datetime.datetime.now()
@@ -100,6 +114,7 @@ def delete_order(Request_ID):
         abort(404)
     orders.remove(order[0])
     return jsonify({}), 204
+
 
 if __name__ == '__main__':
     app.run(debug=True)

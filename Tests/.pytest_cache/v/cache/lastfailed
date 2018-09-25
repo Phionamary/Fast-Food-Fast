@@ -1,1 +1,5 @@
-{}
+{
+  "test_routes.py::TestFlaskApi::test_delete": true,
+  "test_routes.py::TestFlaskApi::test_empty_list": true,
+  "test_routes.py::TestFlaskApi::test_item_not_exist": true
+}

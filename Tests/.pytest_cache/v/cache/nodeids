@@ -1,8 +1,8 @@
 [
-  "test_routes.py::TestFlaskApi::test_delete",
+  "test_routes.py::TestFlaskApi::test_delete_an_order",
   "test_routes.py::TestFlaskApi::test_get_all",
   "test_routes.py::TestFlaskApi::test_get_one",
-  "test_routes.py::TestFlaskApi::test_item_not_exist",
+  "test_routes.py::TestFlaskApi::test_order_does_not_exist",
   "test_routes.py::TestFlaskApi::test_post",
   "test_routes.py::TestFlaskApi::test_update",
   "test_routes.py::TestFlaskApi::test_update_error"
