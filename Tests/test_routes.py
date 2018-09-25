@@ -25,6 +25,12 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(data['orders']), 6)
 
+    def test_empty_list(self):
+        response = self.app.get(BASE_URL)
+        data = json.loads(response.get_data())
+        if len(data) == 0:
+            self.assertIn("No orders have been placed yet", data["message"])
+
     def test_get_one(self):
         response = self.app.get(BASE_URL)
         data = json.loads(response.get_data())

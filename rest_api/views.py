@@ -33,7 +33,7 @@ def get_all_orders():
     
     response = jsonify({'orders': orders})
     if len(orders) == 0:
-        return jsonify({'message': 'No orders have been placed yet'})
+        return jsonify({"message": "No orders have been placed yet"})
     return response
 
 
