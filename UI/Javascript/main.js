@@ -1,14 +1,8 @@
-function SelectUser() {
-  var user_role = document.getElementById("id")
+function SelectUser(){
+	if (document.getElementById('radioadmin').checked){
+    window.location.href ="Fast-Food-Fast/UI/admin.html";}
+    
 
-  if (user_role.value === "radioadmin"){
-    window.location.href = "UI/admin.html";
-    return false
-  }
-
-  else if(user_role.value === "radiouser"){
-    window.location.href = "UI/orders.html";
-    return false
-  }
-
-  }
+  else if (document.getElementById('radiouser').checked){
+    window.location.href ="order.html";}
+}
