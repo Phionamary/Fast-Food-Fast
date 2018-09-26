@@ -48,7 +48,6 @@
 
         <div class = "register">
             
-            <form method = "POST">
                 
                 <table align=right>
                     
@@ -82,7 +81,7 @@
 
                         <div class="fields">
                             <td><span>Password:</span></td>
-                            <td><input type = "text" name = "event" placeholder = "Please enter a password"><br></td>
+                            <td><input type = "text" name = "password" placeholder = "Please enter a password"><br></td>
                 
                         </div>
 
@@ -92,25 +91,46 @@
 
                         <div class="fields">
                             <td><span>Repeat Password:</span></td>
-                            <td><input type = "text" name = "event" placeholder = "Please repeat password"><br></td>
+                            <td><input type = "text" name = "password" placeholder = "Please repeat password"><br></td>
                     
                         </div>
     
                     </tr>
 
+                    <tr>
+                        <div class = "fields">
+    
+                            <td><span>Admin:</span></td>
+                            <td><input type="radio" class="radio" name="admin" value="admin" id="radioadmin"> </td>
+    
+                        </div>
+                        </tr>
         
-                    <tr> 
-                        <td> </td>
+                        <tr>
+                            <div class = "fields">
         
-                        <td><button type="submit" class="button" onclick="SelectUser()" > Sign Up</button></td>
+                                <td><span>Client:</span></td>
+                                <td> <input type="radio" class="radio" name="client" value="admin" id="radiouser"> </td> 
         
-                    </tr>
+                            </div>
+                        </tr>
+        
+                        <tr> 
+        
+                            <td> </td>
+        
+                            <td> <button type="submit" id = "button" class="button" onclick="RedirectUser()" > Sign Up</button><br></td>
+        
+                            <tr> 
 
                 </table>
-            </form>
+    
 
 
         </div>
+
+
+        <script src="Javascript/main.js"></script>
         
 
         <div class="footer">
