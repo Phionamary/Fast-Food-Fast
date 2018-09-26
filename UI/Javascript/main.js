@@ -1,4 +1,4 @@
-function SelectUser(){
+function RedirectUser(){
 	if (document.getElementById('radioadmin').checked){
     window.location.href ="Fast-Food-Fast/UI/admin.html";}
     

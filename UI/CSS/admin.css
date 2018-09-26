@@ -59,38 +59,6 @@ ul{
 
 }
 
-.form{
-    color: rgb(245, 16, 195);
-}
-
-
-.register{
-    float: right;
-    color: rgb(245, 16, 195);
-    padding: 50px;
-    text-align: right;
-    border-radius: 3px;
-    border-color: #8181F7;
-    width: 35%;
-
-}
-
-.fields {
-    margin: 50px;
-    background-color: #A9F5F2;
-    color: rgb(245, 16, 195);
-}
-
-input {
-    height: 10px;
-    width: 250px;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid rgb(245, 16, 195);
-    box-sizing: border-box;
-
-}
 
 button {
     background-color: #A9F5F2;
@@ -170,7 +138,7 @@ tr:nth-child(even) {
     color: #000000;
     background-color: #F781F3;
     text-align: center;
-    position: fixed;
+    position: auto;
     left: 0;
     bottom: 0;
     width: 100%;
