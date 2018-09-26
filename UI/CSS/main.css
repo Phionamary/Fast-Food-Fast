@@ -1,12 +1,17 @@
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 600px) {
 
     nav {
         height: 100%;
-        width: 20%;
+        width: 50%;
         overflow: hidden;
+        position: static;
+    }
+
+    body {
+        background-image: none;
     }
 }
-    
+
 #nav {
     color: #08088A;
     padding: 20px;
@@ -43,7 +48,7 @@ header nav {
 
 ul{
     margin: 0;
-    padding: 0
+    padding: 0;
 }
 
 
@@ -54,32 +59,79 @@ ul{
 
 }
 
-box a {
-    color: #FF8000;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 16px;
-
+.form{
+    color: rgb(245, 16, 195);
 }
 
 
-box li{
+.register{
+    float: right;
+    color: rgb(15, 2, 59);
+    padding: 50px;
+    text-align: right;
+    border-radius: 3px;
+    border-color: #8181F7;
+    width: 35%;
 
-    color: #FF8000;
-    display: inline;
-    padding: 0 20px 0 20px;
 }
 
+.fields {
+    margin: 50px;
+    background-color: #A9F5F2;
+    color: rgb(245, 16, 195);
+}
 
-box .highlight, header .current a{
-    color: #FF8000;
+input {
+    height: 10px;
+    width: 250px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid rgb(245, 16, 195);
+    box-sizing: border-box;
+
+}
+
+button {
+    background-color: #A9F5F2;
+    color: rgb(245, 16, 195);
+    float: left;
+    margin: 20px;
+    height: 30px;
+    width: 100px;
     font-weight: bold;
+    border-radius: 4px;
 }
 
-box a:hover{
-    color: #FF8000;
-    font-weight: bold;
+.container{
+    padding: 100px;
+    color: rgb(245, 16, 195);
 }
+
+form{
+    width: 80%;
+    margin-left: 10%;
+}
+select{
+    width: 100%;
+    height: 40px;
+    border-radius: 2px;
+}
+textarea{
+    width: 100%;
+    border-radius: 2px;
+}
+option{
+    text-align: center;
+    font-size: 18px;
+}
+
+
+
+
+
+
+
 
 .footer {
     color: #000000;

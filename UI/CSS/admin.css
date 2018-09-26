@@ -1,13 +1,16 @@
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 600px) {
 
     nav {
         height: 100%;
-        width: 20%;
+        width: 50%;
         overflow: hidden;
+        position: static;
+    }
+
+    body {
+        background-image: none;
     }
 }
-    
-
 
 #nav {
     color: #08088A;
@@ -45,7 +48,7 @@ header nav {
 
 ul{
     margin: 0;
-    padding: 0
+    padding: 0;
 }
 
 
@@ -56,16 +59,53 @@ ul{
 
 }
 
+
+button {
+    background-color: #A9F5F2;
+    color: rgb(245, 16, 195);
+    float: left;
+    margin: 20px;
+    height: 30px;
+    width: 100px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.container{
+    padding: 100px;
+    color: rgb(245, 16, 195);
+}
+
+form{
+    width: 80%;
+    margin-left: 10%;
+}
+select{
+    width: 100%;
+    height: 40px;
+    border-radius: 2px;
+}
+textarea{
+    width: 100%;
+    border-radius: 2px;
+}
+option{
+    text-align: center;
+    font-size: 18px;
+}
+
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    border-bottom: 100px
 }
 
 td, th {
     border: 1px solid #dddddd;
     text-align: center;
-    padding: 8px;
+    padding: 10px;
 }
 
 tr:nth-child(even) {
@@ -92,23 +132,13 @@ tr:nth-child(even) {
     cursor: pointer;
 }
 
-button {
-    background-color: #A9F5F2;
-    color: rgb(245, 16, 195);
-    float: left;
-    margin: 20px;
-    height: 30px;
-    width: 100px;
-    font-weight: bold;
-    border-radius: 4px;
-}
 
 
 .footer {
     color: #000000;
     background-color: #F781F3;
     text-align: center;
-    position: bottom;
+    position: auto;
     left: 0;
     bottom: 0;
     width: 100%;
