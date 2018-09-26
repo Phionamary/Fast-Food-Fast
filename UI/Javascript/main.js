@@ -1,8 +1,10 @@
 function RedirectUser(){
+
+
 	if (document.getElementById('radioadmin').checked){
-    window.location.href ="Fast-Food-Fast/UI/admin.html";}
+    window.location.href ="admin.html";}
     
 
-  else if (document.getElementById('radiouser').checked){
+  if (document.getElementById('radiouser').checked){
     window.location.href ="order.html";}
 }
