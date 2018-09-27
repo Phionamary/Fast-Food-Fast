@@ -2,7 +2,7 @@ from flask import Flask, jsonify, abort, make_response, request
 import datetime
 
 
-from .models import orders
+from models import orders
 
 NOT_FOUND = 'Not found'
 BAD_REQUEST = 'Bad request'
