@@ -5,7 +5,7 @@ function RedirectUser(){
     window.location.href ="admin.html";}
     
 
-  if (document.getElementById('radiouser').checked){
-    window.location.href ="order.html";}
+  else if (document.getElementById('radiouser').checked){
+    window.location.href ="menu.html";}
 }
 
