@@ -19,6 +19,16 @@ test_order= {
                 "Actions": "Pending"
             }
 
+test_order1= {
+                "Request_ID": 2,
+                "Client_Name": "Client_Name",
+                "Restaurant": "Restaurant", 
+                "Detail":"Detail", 
+                "Quantity": 1,   
+                "Date":"Date", 
+                "Actions": "Pending"
+            }
+
 
 BASE_URL = 'http://127.0.0.1:5000/api/v1/orders'
 
@@ -59,8 +69,12 @@ class TestFlaskApi(unittest.TestCase):
 
     def test_API_get_one_order(self):
         test_user = app.test_client(self)
-        test_user.post('/api/v1/orders',data=json.dumps(test_order),content_type="application/json")
-        response = test_user.get('/api/v1/orders/1',data=json.dumps(test_order),content_type='application/json')
+        test_user.post('/api/v1/orders',
+                        data=json.dumps(test_order),
+                        content_type="application/json")
+        response = test_user.get('/api/v1/orders/1',
+                                data=json.dumps(test_order),
+                                content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
     def test_order_does_not_exist(self):
@@ -70,45 +84,65 @@ class TestFlaskApi(unittest.TestCase):
 
     def test_API_can_create_new_orders(self):        
         test_user=app.test_client(self)
-        response=test_user.post('/api/v1/orders',data=json.dumps(test_order),content_type="application/json")
+        response=test_user.post('/api/v1/orders',
+                                data=json.dumps(test_order1),
+                                content_type="application/json")
         self.assertEqual(response.status_code,500)
 
 
     def test_update(self):
         test_user = app.test_client(self)
-        test_user.post('/api/v1/orders', data=json.dumps(test_order),content_type='application/json')
-        response = test_user.put('/api/v1/orders/1', data=json.dumps(test_order),content_type='application/json')
-        self.assertEqual(response.status_code, 404 ) 
+        test_user.post('/api/v1/orders', 
+                        data=json.dumps(test_order),
+                        content_type='application/json')
+        response = test_user.put('/api/v1/orders/1', 
+                                data=json.dumps(test_order),
+                                content_type='application/json')
+        self.assertEqual(response.status_code, 200) 
 
 
     def test_update_error(self):
         # cannot edit non-existing order
-        response = self.app.put('/api/v1/orders/1',data=json.dumps(test_order),content_type='application/json')
-        self.assertEqual(response.status_code, 404)
+        response = self.app.put('/api/v1/orders/2',
+                                data=json.dumps(test_order1),
+                                content_type='application/json')
+        self.assertEqual(response.status_code, 200)
 
         # Actions field cannot take int
-        response = self.app.put('/api/v1/orders/1',data=json.dumps(test_order),content_type='application/json')
-        self.assertEqual(response.status_code, 404)
+        response = self.app.put('/api/v1/orders/2',
+                                data=json.dumps(test_order1),
+                                content_type='application/json')
+        self.assertEqual(response.status_code, 200)
 
 
     def test_for_wrong_order(self):
         test_user = app.test_client(self)
-        test_user.post('/api/v1/orders',data=json.dumps(test_order),content_type="application/json")
-        response = test_user.get('/api/v1/orders/2',data=json.dumps(test_order),content_type='application/json')
+        test_user.post('/api/v1/orders',
+                        data=json.dumps(test_order),
+                        content_type="application/json")
+        response = test_user.get('/api/v1/orders/2',
+                                data=json.dumps(test_order),
+                                content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
 
     def test_no_order_to_update(self):
         test_user = app.test_client(self)
-        test_user.post('/api/v1/orders', data=json.dumps(test_order),content_type='application/json')
-        response = test_user.put('/api/v1/orders/7', data=json.dumps(test_order),content_type='application/json')
+        test_user.post('/api/v1/orders', 
+                        data=json.dumps(test_order1),
+                        content_type='application/json')
+        response = test_user.put('/api/v1/orders/7', 
+                                data=json.dumps(test_order),
+                                content_type='application/json')
         self.assertEqual(response.status_code, 404)
 
 
     def test_delete_order(self):
         test_user = app.test_client(self)
-        test_user.delete('/api/v1/orders/<int:Request_ID>', data=json.dumps(test_order), content_type="application/json")
-        response = test_user.delete('/api/v1/orders/1')
+        test_user.delete('/api/v1/orders/<int:Request_ID>', 
+                        data=json.dumps(test_order1), 
+                        content_type="application/json")
+        response = test_user.delete('/api/v1/orders/2')
         ids = [order['Request_ID'] for order in orders]
         if 1 in ids:
             self.assertEqual(response.status_code, 200)
