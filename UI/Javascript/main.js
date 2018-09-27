@@ -8,3 +8,4 @@ function RedirectUser(){
   if (document.getElementById('radiouser').checked){
     window.location.href ="order.html";}
 }
+
