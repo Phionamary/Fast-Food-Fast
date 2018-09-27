@@ -1,10 +1,10 @@
 [
-  "Tests/test_routes.py::TestFlaskApi::test_delete_an_order",
-  "Tests/test_routes.py::TestFlaskApi::test_empty_list",
-  "Tests/test_routes.py::TestFlaskApi::test_get_all",
-  "Tests/test_routes.py::TestFlaskApi::test_get_one",
-  "Tests/test_routes.py::TestFlaskApi::test_order_does_not_exist",
-  "Tests/test_routes.py::TestFlaskApi::test_post",
-  "Tests/test_routes.py::TestFlaskApi::test_update",
-  "Tests/test_routes.py::TestFlaskApi::test_update_error"
+  "rest_api/test_routes.py::TestFlaskApi::test_delete_an_order",
+  "rest_api/test_routes.py::TestFlaskApi::test_empty_list",
+  "rest_api/test_routes.py::TestFlaskApi::test_get_all",
+  "rest_api/test_routes.py::TestFlaskApi::test_get_one",
+  "rest_api/test_routes.py::TestFlaskApi::test_order_does_not_exist",
+  "rest_api/test_routes.py::TestFlaskApi::test_post",
+  "rest_api/test_routes.py::TestFlaskApi::test_update",
+  "rest_api/test_routes.py::TestFlaskApi::test_update_error"
 ]
