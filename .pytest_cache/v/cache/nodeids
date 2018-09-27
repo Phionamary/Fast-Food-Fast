@@ -3,9 +3,11 @@
   "app/test_routes.py::TestFlaskApi::test_API_get_one_order",
   "app/test_routes.py::TestFlaskApi::test_delete_order",
   "app/test_routes.py::TestFlaskApi::test_empty_list",
+  "app/test_routes.py::TestFlaskApi::test_for_wrong_order",
   "app/test_routes.py::TestFlaskApi::test_get_all_orders",
+  "app/test_routes.py::TestFlaskApi::test_index",
+  "app/test_routes.py::TestFlaskApi::test_no_order_to_update",
   "app/test_routes.py::TestFlaskApi::test_order_does_not_exist",
-  "app/test_routes.py::TestFlaskApi::test_post_validations",
   "app/test_routes.py::TestFlaskApi::test_update",
   "app/test_routes.py::TestFlaskApi::test_update_error"
 ]

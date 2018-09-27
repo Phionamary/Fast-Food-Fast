@@ -1,8 +1,8 @@
 {
   "Tests/test_routes.py::TestFlaskApi": true,
-  "app/test_routes.py::TestFlaskApi": true,
   "app/test_routes.py::TestFlaskApi::test_delete_an_order": true,
   "app/test_routes.py::TestFlaskApi::test_post": true,
+  "app/test_routes.py::TestFlaskApi::test_post_validations": true,
   "rest_api/tests.py::TestFlaskApi::test_update": true,
   "run.py": true
 }

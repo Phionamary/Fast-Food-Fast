@@ -13,6 +13,18 @@ BAD_REQUEST = 'Bad request'
 
 app = Flask (__name__)
 
+def order(var):
+    order = {'Request_ID': len(orders)+1,
+            'Client_Name': var["Client_Name"],
+            'Restaurant': var["Restaurant"], 
+            'Detail':var['Detail'],
+            'Quantity': var["Quantity"], 
+            'Date':var["Date"],
+            'Actions': var["Actions"]
+            }
+
+    return order
+
 def get_single_order(Request_ID):
     return [order for order in orders if order['Request_ID'] == Request_ID]
 
@@ -24,6 +36,10 @@ def not_found(error):
 @app.errorhandler(400)
 def bad_request(error):
     return make_response(jsonify({'error': BAD_REQUEST}), 400)
+
+@app.route("/")
+def index():
+    return jsonify({"Hello":"There"})
 
 
 @app.route('/api/v1/orders', methods=['GET'])
@@ -38,39 +54,21 @@ def get_all_orders():
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
 def get_particular_order(Request_ID):
-    order = get_single_order(Request_ID)
-    if not order:
-        abort(404)
-    return jsonify({'orders': order})
+    if request.method=='GET':
+        result = [d for d in orders if d.get('Request_ID', '') == Request_ID]
+        if result:
+            return make_response(jsonify({'orders':result[0]})),200 
+        else:
+            return make_response(jsonify({'Message':'Order not found'})),404
 
 @app.route('/api/v1/orders', methods=['POST'])
 def create_new_order():
-
-    if not request.json or 'order' not in request.json:
-        abort(400)
-        
-    Request_ID = len(orders) + 1
-
-    Request_ID = request.json.get('Request_ID')
- 
-    Client_Name = request.json.get('Client_Name')
- 
-    Quantity = request.json.get('Quantity')
-
-    Restaurant = request.json.get('Restaurant')
-
-    Detail = request.json.get('Detail')
-
-    #Date = request.json.get('Date')
-    Date = datetime.datetime.now()
-    '''if type(Date) is not datetime:
-        abort(400)'''
-
-    Actions = request.json.get('Actions')
     
-    order = {'Request_ID': Request_ID,'Client_Name': Client_Name,'Restaurant': Restaurant, 'Detail':Detail, 'Quantity': Quantity, 'Date':Date, 'Actions': Actions}
-    orders.append(order)
-    return jsonify({'order': order}), 201
+    if request.method=="POST":
+        data=request.json
+        new_order = order (data)
+        orders.append(new_order)
+        return make_response(jsonify({'Message':order})),201
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
