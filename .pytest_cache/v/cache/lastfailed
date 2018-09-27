@@ -1,6 +1,5 @@
 {
   "Tests/test_routes.py::TestFlaskApi": true,
-  "rest_api/test_routes.py::TestFlaskApi": true,
   "rest_api/tests.py::TestFlaskApi::test_update": true,
   "run.py": true
 }

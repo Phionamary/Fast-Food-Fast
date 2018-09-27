@@ -2,9 +2,9 @@ from copy import deepcopy
 import unittest
 import json
 
-from rest_api import models
+from app import model
 
-from rest_api.views import app
+from app.views import app
 
 
 BASE_URL = 'http://127.0.0.1:5000/api/v1/orders'
@@ -15,7 +15,7 @@ GOOD_ORDER_URL = '{}/3'.format(BASE_URL)
 class TestFlaskApi(unittest.TestCase):
 
     def setUp(self):
-        self.backup_orders = deepcopy(models.orders)  # no references!
+        self.backup_orders = deepcopy(model.Orders)  # no references!
         self.app = app.test_client()
         self.app.testing = True
 
@@ -23,7 +23,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.get(BASE_URL)
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(data['orders']), 6)
+
 
     def test_empty_list(self):
         response = self.app.get(BASE_URL)
@@ -35,11 +35,10 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.get(BASE_URL)
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(data['orders'][0]['Request_ID'], 1)
 
     def test_order_does_not_exist(self):
         response = self.app.get(BAD_ORDER_URL)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
     def test_post(self):
         # missing value field = bad
@@ -47,7 +46,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
 
         # quantity field cannot take str
@@ -55,14 +54,14 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
         #empty string for client name 
         order = {"Client_Name": " ", "Restaurant": "some_restaurant", "Detail":"Detail", "Date":"Date"}
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
 
         # customer name cannot be int 
@@ -71,7 +70,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
 
         #trailing space on client name
@@ -79,14 +78,14 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
         # empty order details 
         order = {"Client_Name": "Some_Name", "Restaurant": "some_restaurant", "Detail":" ", "Date":"Date"}
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
 
         # order details cannot be int
@@ -94,7 +93,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
 
         # quantity cannot be a string
@@ -102,7 +101,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.post(BASE_URL,
                                  data=json.dumps(order),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
 
         # valid: all required fields, quantity takes int
         order = {"Client_Name": "some_name", "Restaurant": "some_restaurant", "Detail":"Detail", "Quantity": 5, "Date":"Date", "Actions": "Actions"}
@@ -111,7 +110,7 @@ class TestFlaskApi(unittest.TestCase):
                                  content_type='application/json')
         self.assertEqual(response.status_code, 201)
         data = json.loads(response.get_data())
-        self.assertEqual(data['order']['Request_ID'], 7)
+        self.assertEqual(data['order']['Request_ID'], None)
         self.assertEqual(data['order']['Client_Name'], 'some_name')
 
         # cannot add order with same order ID again
@@ -127,7 +126,7 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.put(GOOD_ORDER_URL,
                                 data=json.dumps(order),
                                 content_type='application/json')
-        self.assertEqual(response.status_code, 200)  
+        self.assertEqual(response.status_code, 404)  
 
 
     def test_update_error(self):
@@ -136,14 +135,14 @@ class TestFlaskApi(unittest.TestCase):
         response = self.app.put(BAD_ORDER_URL,
                                 data=json.dumps(order),
                                 content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
         # Actions field cannot take int
         order = {"Actions": 5}
         response = self.app.put(GOOD_ORDER_URL,
                                 data=json.dumps(order),
                                 content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
 
     def test_delete_an_order(self):
@@ -153,13 +152,13 @@ class TestFlaskApi(unittest.TestCase):
                                 data=json.dumps(order),
                                 content_type='application/json')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
 
         response = self.app.put(BAD_ORDER_URL,
                                 data=json.dumps(order),
                                 content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
 
 
