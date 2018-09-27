@@ -1,10 +1,11 @@
 [
-  "app/test_routes.py::TestFlaskApi::test_delete_an_order",
+  "app/test_routes.py::TestFlaskApi::test_API_can_create_new_orders",
+  "app/test_routes.py::TestFlaskApi::test_API_get_one_order",
+  "app/test_routes.py::TestFlaskApi::test_delete_order",
   "app/test_routes.py::TestFlaskApi::test_empty_list",
-  "app/test_routes.py::TestFlaskApi::test_get_all",
-  "app/test_routes.py::TestFlaskApi::test_get_one",
+  "app/test_routes.py::TestFlaskApi::test_get_all_orders",
   "app/test_routes.py::TestFlaskApi::test_order_does_not_exist",
-  "app/test_routes.py::TestFlaskApi::test_post",
+  "app/test_routes.py::TestFlaskApi::test_post_validations",
   "app/test_routes.py::TestFlaskApi::test_update",
   "app/test_routes.py::TestFlaskApi::test_update_error"
 ]

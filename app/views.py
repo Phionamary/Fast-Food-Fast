@@ -45,6 +45,9 @@ def get_particular_order(Request_ID):
 
 @app.route('/api/v1/orders', methods=['POST'])
 def create_new_order():
+
+    if not request.json or 'order' not in request.json:
+        abort(400)
         
     Request_ID = len(orders) + 1
 
