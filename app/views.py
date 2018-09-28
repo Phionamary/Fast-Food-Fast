@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, abort, make_response, request
 from datetime import datetime
 
-from data import orders
+from .data import orders
 
-from model import Orders
+from .model import Orders
 
 
 
