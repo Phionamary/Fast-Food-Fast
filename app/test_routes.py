@@ -87,7 +87,7 @@ class TestFlaskApi(unittest.TestCase):
         response=test_user.post('/api/v1/orders',
                                 data=json.dumps(test_order1),
                                 content_type="application/json")
-        self.assertEqual(response.status_code,500)
+        self.assertEqual(response.status_code,201)
 
 
     def test_update(self):
