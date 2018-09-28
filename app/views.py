@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, abort, make_response, request
-import datetime
+from datetime import datetime
 
-from .data import orders
+from data import orders
 
-from .model import Orders
+from model import Orders
 
 
 
@@ -19,7 +19,7 @@ def Order(var):
             'Restaurant': var["Restaurant"], 
             'Detail':var['Detail'],
             'Quantity': var["Quantity"], 
-            'Date':var["Date"],
+            'Date':str(datetime.utcnow()),
             'Actions': var["Actions"]
             }
 
@@ -66,9 +66,9 @@ def create_new_order():
     
     if request.method=="POST":
         data=request.json
-        new_order = order (data)
+        new_order = Order (data)
         orders.append(new_order)
-        return make_response(jsonify({'Message':order})),201
+        return make_response(jsonify({'Message':new_order})),201
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
@@ -100,3 +100,4 @@ def delete_order(Request_ID):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
