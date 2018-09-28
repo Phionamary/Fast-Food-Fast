@@ -1,10 +1,13 @@
 [
-  "rest_api/test_routes.py::TestFlaskApi::test_delete_an_order",
-  "rest_api/test_routes.py::TestFlaskApi::test_empty_list",
-  "rest_api/test_routes.py::TestFlaskApi::test_get_all",
-  "rest_api/test_routes.py::TestFlaskApi::test_get_one",
-  "rest_api/test_routes.py::TestFlaskApi::test_order_does_not_exist",
-  "rest_api/test_routes.py::TestFlaskApi::test_post",
-  "rest_api/test_routes.py::TestFlaskApi::test_update",
-  "rest_api/test_routes.py::TestFlaskApi::test_update_error"
+  "app/test_routes.py::TestFlaskApi::test_API_can_create_new_orders",
+  "app/test_routes.py::TestFlaskApi::test_API_get_one_order",
+  "app/test_routes.py::TestFlaskApi::test_delete_order",
+  "app/test_routes.py::TestFlaskApi::test_empty_list",
+  "app/test_routes.py::TestFlaskApi::test_for_wrong_order",
+  "app/test_routes.py::TestFlaskApi::test_get_all_orders",
+  "app/test_routes.py::TestFlaskApi::test_index",
+  "app/test_routes.py::TestFlaskApi::test_no_order_to_update",
+  "app/test_routes.py::TestFlaskApi::test_order_does_not_exist",
+  "app/test_routes.py::TestFlaskApi::test_update",
+  "app/test_routes.py::TestFlaskApi::test_update_error"
 ]
