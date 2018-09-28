@@ -13,7 +13,7 @@ BAD_REQUEST = 'Bad request'
 
 app = Flask (__name__)
 
-def order(var):
+def Order(var):
     order = {'Request_ID': len(orders)+1,
             'Client_Name': var["Client_Name"],
             'Restaurant': var["Restaurant"], 
