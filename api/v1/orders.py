@@ -1,7 +1,7 @@
 import datetime
 
 import psycopg2
-from api.v1.models import DatabaseConnection
+from .models import DatabaseConnection
 
 class Orders():
 
@@ -45,5 +45,11 @@ class Orders():
         edit_status = ("UPDATE Orders WHERE Request_ID= '{}' AND Actions='{}' ".format(self.Request_ID,self.Actions))
         self.cur.execute(edit_status)
         return self.cur.fetchone()
+
+    def delete_order(self, User_id, Request_ID):
+        """Method to delete an entry"""
+        delete = ("DELETE FROM entries WHERE Request_ID={} and \ User_id='{}'".format(self.Request_ID, self.User_id))
+        self.cur.execute(delete)
+        return 'Order Successfully deleted'
 
 

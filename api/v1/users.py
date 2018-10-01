@@ -1,7 +1,7 @@
 import datetime
 
 import psycopg2
-from api.v1.models import DatabaseConnection
+from .models import DatabaseConnection
 
 class Users():
 
@@ -42,10 +42,29 @@ class Users():
         return all_users 
 
 
-    def verify_new_user(self, Username, Email):
+    def verify_new_user(self, username, email):
         """Method to verify a user"""
-        signin = ("SELECT * FROM Users WHERE UserName = '{}' and Email='{}'".format(Username, Email))
+        signin = (
+            "SELECT * FROM Users WHERE Username='{}' \
+            or Email='{}'".format(self.Username, self.Email))
         self.cur.execute(signin)
-        
+        user = self.cur.fetchall()
+        return user
+
+    def select_user_id(self, User_id):
+        """Method to get a user-id"""
+        signin = ("SELECT * FROM users WHERE User_id='{}'"
+                  .format(self.User_id))
+        self.cur.execute(signin)
+        user = self.cur.fetchall()
+        return user
+
+    def get_profile(self, User_id):
+        """Method to get user profile"""
+        profile = ("select Username,Email,Role,Created_at(Users.User_id)\
+                   from Users left join Orders on Orders.User_id=Users.User_id\
+                   where Users.User_id={} group by Users.User_id"
+                   .format(self.User_id))
+        self.cur.execute(profile)
         user = self.cur.fetchall()
         return user

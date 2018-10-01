@@ -1,7 +1,7 @@
 import datetime
 
 import psycopg2
-from api.v1.models import DatabaseConnection
+
 
 
 class Menu():
@@ -13,7 +13,9 @@ class Menu():
         self.Price = Price
         self.Detail = Detail
         self.conn = psycopg2.connect(host="localhost", port="5434", database="fastfoodfast", user="postgres")
-        
+
+    
+
     def create_cursor(self):
         self.cur = self.conn.cursor()
         return self.cur
