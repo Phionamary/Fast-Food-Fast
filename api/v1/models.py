@@ -1,29 +1,28 @@
 import psycopg2
 
-class DatabaseConnection:
+class DatabaseConnection():
     
     def __init__(self):
-        self.conn = psycopg2.connect(host="localhost", port="5434", database="phiona", user="postgres")
+        self.conn = psycopg2.connect(host="localhost", port="5434", database="fastfoodfast", user="postgres")
         
     def create_cursor(self):
         self.cur = self.conn.cursor()
         return self.cur
         
         
-    def create_users_table(self, User_id, First_name, Last_name, Email, Password, Created_at):
-        Users = """CREATE TABLE IF NOT EXISTS Users(User_id serial PRIMARY KEY,
-         First_name varchar (50) NOT NULL, 
-         Last_name varchar (50) NOT NULL, 
-         Email varchar (50) NOT NULL, 
-         Password varchar (50) NOT NULL, 
-         Created_at date)"""
+    def create_users_table(self, User_id, Username, Email, Password, Created_at):
+        Users = """CREATE TABLE IF NOT EXISTS UsersUsers(User_id serial PRIMARY KEY, 
+        Username varchar (50) NOT NULL, 
+        Email varchar (50) NOT NULL, 
+        Password varchar (50) NOT NULL, 
+        Created_at date)"""
 
         self.cur.execute(Users)
 
 
-    def create_orders_table(self, Request_ID, Client_Name, Restaurant, Detail,  Actions, Date):
+    def create_orders_table(self, Request_ID, User_id, Restaurant, Detail,  Actions, Date):
         Orders = """(Request_ID serial PRIMARY KEY, 
-        Client_Name varchar (50) NOT NULL, 
+        User_id int REFERENCES Users(User_id), 
         Restaurant varchar (50) NOT NULL,  
         Detail varchar (50) NOT NULL, 
         Quantity int NOT NULL, 

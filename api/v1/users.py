@@ -5,23 +5,22 @@ from api.v1.models import DatabaseConnection
 
 class Users():
 
-    def __init__(self, User_id, First_name, Last_name, Email, Password, Created_at):
+    def __init__(self, User_id, Username, Email, Password, Role, Created_at):
         self.User_id = User_id
-        self.First_name = First_name
-        self.Last_name = Last_name
+        self.Username = Username
         self.Email = Email
         self.Password = Password
+        self.Role = Role
         self.Created_at = Created_at
-        self.conn = psycopg2.connect(host="localhost", port="5434", database="phiona", user="postgres")
+        self.conn = psycopg2.connect(host="localhost", port="5434", database="fastfoodfast", user="postgres")
 
     def create_cursor(self):
         self.cur = self.conn.cursor()
         return self.cur
 
     def add_new_user(self):
-        new_user = """INSERT INTO Users(First_name, Last_name, Email, Password, Created_at) 
-        VALUES ('{}', '{}', '{}', '{}', '{}');""".format(self.First_name, self.Last_name, 
-        self.Email, self.Password, self.Created_at)
+        new_user = """INSERT INTO Users(Username, Email, Password, Role, Created_at) 
+        VALUES ('{}', '{}', '{}', '{}', '{}');""".format(self.Username,self.Email, self.Password, self.Role, self.Created_at)
         self.cur.execute(new_user)
         self.conn.commit()
         return True
@@ -43,9 +42,9 @@ class Users():
         return all_users 
 
 
-    def verify_new_user(self, First_name, Last_name, Email):
+    def verify_new_user(self, Username, Email):
         """Method to verify a user"""
-        signin = ("SELECT * FROM Users WHERE First_Name='{}' and Last_Name = '{}' and Email='{}'".format(First_name, Last_name, Email))
+        signin = ("SELECT * FROM Users WHERE UserName = '{}' and Email='{}'".format(Username, Email))
         self.cur.execute(signin)
         
         user = self.cur.fetchall()

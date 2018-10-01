@@ -5,28 +5,29 @@ from api.v1.models import DatabaseConnection
 
 class Orders():
 
-    def __init__(self, Request_ID, Client_Name, Restaurant, Detail, Actions, Date):
+    def __init__(self, Request_ID, User_id, Restaurant, Detail,  Actions, Date):
         self.Request_ID = Request_ID
-        self.Client_Name = Client_Name
+        self.User_id = User_id
         self.Restaurant = Restaurant
         self.Detail = Detail
         self.Actions = Actions
         self.Date = Date
-        self.conn = psycopg2.connect(host="localhost", port="5434", database="phiona", user="postgres")
+        self.conn = psycopg2.connect(host="localhost", port="5434", database="fastfoodfast", user="postgres")
 
     def create_cursor(self):
         self.cur = self.conn.cursor()
         return self.cur
 
     def add_new_order(self):
-        new_order = """INSERT INTO Events(Client_Name, Restaurant, Detail, Actions, Date) 
-        VALUES ('{}','{}', '{}', '{}', {}')""".format(self.Client_Name, self.Restaurant, self.Detail, self.Actions, self.Date)        
+        new_order = """INSERT INTO Events(User_id, Restaurant, Detail, Actions, Date) 
+        VALUES ('{}','{}', '{}', '{}', {}')""".format(self.User_id, self.Restaurant, self.Detail, self.Actions, self.Date)        
         self.cur.execute(new_order)
         self.conn.commit()
         return True 
 
     def get_order_by_id(self): 
-        order = """SELECT * FROM Orders WHERE Request_ID="{}" """.format(self.Request_ID)
+        #obtaining order for a particular user
+        order = """SELECT * FROM Orders WHERE Request_ID="{}" and User_id = "{}" """.format(self.Request_ID, self.User_id)
         self.cur.execute(order)     
         return self.cur.fetchone() 
 
@@ -34,6 +35,11 @@ class Orders():
         all_orders = """SELECT * FROM Orders """
         self.cur.execute(all_orders)
         return self.cur.fetchall() 
+
+        #for a particular user
+        users_orders = """SELECT * FROM Orders WHERE User_id = "{}" """.format(self.User_id)
+        self.cur.execute(users_orders)
+        return self.cur.fetchall
 
     def update_order_status(self):
         edit_status = ("UPDATE Orders WHERE Request_ID= '{}' AND Actions='{}' ".format(self.Request_ID,self.Actions))
