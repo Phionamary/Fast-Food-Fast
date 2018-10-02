@@ -1,7 +1,7 @@
 import datetime
 
 import psycopg2
-from .models import DatabaseConnection
+
 
 class Orders():
 
@@ -48,7 +48,9 @@ class Orders():
 
     def delete_order(self, User_id, Request_ID):
         """Method to delete an entry"""
-        delete = ("DELETE FROM entries WHERE Request_ID={} and \ User_id='{}'".format(self.Request_ID, self.User_id))
+        delete = ("DELETE FROM Orders WHERE Request_ID={} and \
+                  User_id='{}'".format(
+                      self.Request_ID, self.User_id))
         self.cur.execute(delete)
         return 'Order Successfully deleted'
 

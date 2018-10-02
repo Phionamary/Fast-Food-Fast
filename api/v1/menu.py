@@ -4,6 +4,7 @@ import psycopg2
 
 
 
+
 class Menu():
     def __init__(self, Item_ID, User_id, Food, Restaurant, Price, Detail):
         self.Item_ID = Item_ID

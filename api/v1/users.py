@@ -1,7 +1,7 @@
 import datetime
 
 import psycopg2
-from .models import DatabaseConnection
+
 
 class Users():
 
@@ -17,10 +17,11 @@ class Users():
     def create_cursor(self):
         self.cur = self.conn.cursor()
         return self.cur
+        
 
     def add_new_user(self):
         new_user = """INSERT INTO Users(Username, Email, Password, Role, Created_at) 
-        VALUES ('{}', '{}', '{}', '{}', '{}');""".format(self.Username,self.Email, self.Password, self.Role, self.Created_at)
+        VALUES ('{}', '{}', '{}', '{}', '{}');""".format(self.Username, self.Email, self.Password, self.Role, self.Created_at)
         self.cur.execute(new_user)
         self.conn.commit()
         return True
@@ -42,7 +43,7 @@ class Users():
         return all_users 
 
 
-    def verify_new_user(self, username, email):
+    def verify_new_user(self, Username, Email):
         """Method to verify a user"""
         signin = (
             "SELECT * FROM Users WHERE Username='{}' \
