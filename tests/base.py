@@ -37,7 +37,7 @@ class TestingClass(unittest.TestCase):
         # self.cur.execute(clear_user_table)
 
 
-    def test_user_create_token(self):
+    def user_create_token(self):
         """Function to create login token"""
         test_user = app.test_client(self)
         test_user.post("/api/v1/auth/signup", data=json.dumps(test_user_data), content_type="application/json")
@@ -46,7 +46,7 @@ class TestingClass(unittest.TestCase):
         return token
 
 
-    def test_user(self):
+    def user(self):
         """Function to signin"""
         test_user = app.test_client(self)
         test_user.post("/api/v1/auth/signup", data=json.dumps(test_user_data), content_type="application/json")
@@ -54,47 +54,53 @@ class TestingClass(unittest.TestCase):
         return response
 
 
-    def test_user_create(self):
+    def user_create(self):
         """Function to create a user"""
         test_user = app.test_client(self)
         response = test_user.post("/api/v1/auth/signup", data=json.dumps(test_user_data),content_type="application/json")
         return response
 
 
-    def test_wrong_details(self):
+    def wrong_details(self):
         """Function test login with missing login info"""
         test_user = app.test_client(self)
         response = test_user.post("/api/v1/auth/login", data=json.dumps(wrong_test_sign_in),content_type="application/json")
         return response
 
 
-    def test_wrong_user(self):
-        test_user = app.test_client(self)
+    def wrong_user(self):
         """Function to test wrong user input"""
+        test_user = app.test_client(self)
         response = test_user.post("/api/v1/auth/signup", data=json.dumps(wrong_test_user_data),content_type="application/json")
+        return response
+    
+    def wrong_sign_in(self):
+        """Function to test sign in with wrong details"""
+        test_user = app.test_client(self)
+        response = test_user.post("/api/v1/auth/login", data=json.dumps(test_wrong_sign_in),content_type="application/json")
         return response
 
 
-    def test_helo(self):
+    def helo(self):
         """Function to test hello world"""
         test_user = app.test_client(self)
         response = test_user.get('/', content_type="application/json")
         return response
 
 
-    def test_error_page(self):
+    def error_page(self):
         """Function to test 404 errors"""
         test_user = app.test_client(self)
         response = test_user.get('/3/', content_type="application/json")
         return response
 
-    def test_create_order(self):
+    def create_order(self):
         "Function to test thata user can create an order"
         test_user = app.test_client(self)
         response = test_user.post('/api/v1/orders', data=json.dumps(test_order),content_type='application/json')
         return response
 
-    def test_get_an_order(self):
+    def get_an_order(self):
         """Function to all get an order"""
         test_user = app.test_client(self)
         response = test_user.get("/api/v1/orders", content_type="application/json")
