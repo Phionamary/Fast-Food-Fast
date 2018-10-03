@@ -1,16 +1,16 @@
-import datetime, timedelta
-from functools import wraps
 import re
+from functools import wraps
+import datetime, timedelta
 import jwt
 from pyisemail import is_email
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, jsonify, make_response, request, redirect
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity)
 
-from models import DatabaseConnection
-from menu import Menu
-from orders import Orders
-from users import Users
+from app.models import DatabaseConnection
+from app.menu import Menu, Items
+from app.orders import Orders
+from app.users import Users
 
 
 app = Flask(__name__)
@@ -59,6 +59,7 @@ def process_edit_json(var):
     ''' Function to process order status update info from browser'''
     try:
         order = {
+            'Request_ID': "Request_ID",
             'Actions': var['Actions']
         }
         return order
@@ -110,7 +111,7 @@ def process_menu_json(var):
             'User_id': "User_id",
             'Restaurant': var["Restaurant"], 
             'Detail':var['Detail'],
-            'Price': int["Price"], 
+            'Price': var["Price"], 
             'Food': var["Food"]
         }
         return item
@@ -224,7 +225,7 @@ def make_new_order(User_id):
 
 
     new_order = Orders()
-    new_order.create_order(None, None, data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
+    new_order.create_order(None, "", data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
     new_order.add_new_order()
 
     return jsonify(new_order.to_json()) , 201
@@ -236,40 +237,37 @@ def get_all_orders():
     End Point get all orders
     """
 
-    data = process_order_json(request.json)
-    if data == "parameter missing":
-        return make_response(jsonify({'message': 'parameter missing'}), 400)
-
     resultlist = Orders()
     resultlist.get_orders()
-    return make_response(jsonify({'orders': resultlist})), 200
+
+    orders_list = resultlist.get_orders()
+    
+    return make_response(jsonify({'orders': orders_list})), 200
 
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
 
-def single_entry(Request_ID):
+def single_order(Request_ID):
     """
     End Point to get an single order
     """
 
     if request.method == "GET":
-        data = process_order_json(request.json)
-        if data == "parameter missing" or not all(data.values()):
-            return make_response(jsonify({'message': 'parameter missing'}), 400)
 
-    order = Orders()
-    desired_order = order.get_order_by_id(data['Request_ID'], data['User_id'])
+        your_order = Orders()
+        desired_order = your_order.get_order_by_id(Request_ID)
 
-    if desired_order:
-        return make_response(jsonify({'Orders': desired_order})), 200
-    else:
-        return make_response(jsonify({'Message': 'No orders yet'})), 404
+        if desired_order:
+            return make_response(jsonify({'Orders': desired_order})), 200
+
+        else:
+            return make_response(jsonify({'Message': 'Order does not exist'})), 404
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
 
-def update_order_status(Request_ID, Actions):
+def update_order_status(Request_ID):
     """
     End Point to update the status of an order
     """
@@ -278,43 +276,49 @@ def update_order_status(Request_ID, Actions):
         return make_response(jsonify({'message': 'parameter missing'}), 400)
 
     order = Orders()
-    desired_order = order.get_order_by_id(data['Request_ID'], data['Actions'])
-    desired_order.update_order_status
+    desired_order = order.get_order_by_id(Request_ID)
+    print (desired_order)
+    # order.update_order_status(Request_ID, data["Actions"])
 
     if desired_order:
-        desired_order.update_order_status(Request_ID, data['Actions'])
+        # desired_order.update_order_status("", data['Actions'])
+        order.update_order_status(Request_ID, data["Actions"])
         return make_response(jsonify({'Message': 'Status updated'})), 200
 
     else:
         return make_response(jsonify({'Message': 'No such order'})), 404
 
 @app.route('/api/v1/menu', methods = ['GET'])
-@jwt_required
+
 def get_all_menu_items():
     """Endpoint to retrieve the menu"""
-    if request.method =="POST":
-        menu = Menu()
-        menu.get_all_items()
-        return make_response(jsonify({'orders': menu})), 200
+    menu = Items()
+    menu.get_all_items()
+
+    menu_list = menu.get_all_items()
+    
+    return make_response(jsonify({'menu': menu_list})), 200
 
 @app.route('/api/v1/menu', methods = ['POST'])
 
-def add_menu_item(Role):
+def add_menu_item():
     if request.method == "POST":
         data = process_menu_json(request.json)
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
-    menu_item = Menu()
-    menu_item.create_item("", data['User_id'], data['Food'], data['Restaurant'], data['Price'], data['Detail'])
+    menu_item = Items()
+    menu_item.create_item(None, data['Food'], data['Restaurant'], data['Price'], data['Detail'])
 
     new_item = menu_item.add_new_item()
-    return make_response(jsonify({'menu': new_item})), 201
+
+    return "item added successfully"
+
+    # return jsonify(new_item.to_json()) , 201
 
 
-
-   
 if __name__ == '__main__':
+
     DatabaseConnection().create_users_table()
     DatabaseConnection().create_menu_table()
     DatabaseConnection().create_orders_table()

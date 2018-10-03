@@ -1,0 +1,11 @@
+[
+  "base.py::TestingClass::test_create_order",
+  "base.py::TestingClass::test_error_page",
+  "base.py::TestingClass::test_get_an_order",
+  "base.py::TestingClass::test_helo",
+  "base.py::TestingClass::test_user",
+  "base.py::TestingClass::test_user_create",
+  "base.py::TestingClass::test_user_create_token",
+  "base.py::TestingClass::test_wrong_details",
+  "base.py::TestingClass::test_wrong_user"
+]

@@ -1,6 +1,7 @@
 import datetime
 
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 
 class Orders():
@@ -8,7 +9,7 @@ class Orders():
     def __init__(self):
         self.conn = psycopg2.connect(host="localhost", port="5434", database="fastfoodfast", user="postgres")
         self.conn.autocommit = True
-        self.cur = self.conn.cursor()
+        self.cur = self.conn.cursor(cursor_factory = RealDictCursor)
 
 
     def create_order(self, Request_ID, User_id, Restaurant, Detail, Quantity, Actions, Date):
@@ -25,22 +26,29 @@ class Orders():
 
     def add_new_order(self):
         new_order = """INSERT INTO Orders(Request_ID, User_id, Restaurant, Detail, Quantity, Actions, Date) 
-        VALUES (DEFAULT, %s, %s, %s, %s, %s, %s) RETURNING Request_ID, User_id, Restaurant, Quantity, Detail, Actions, Date"""        
-        self.cur.execute(new_order, (self.User_id, self.Restaurant, self.Detail, self.Quantity, self.Actions, self.Date))
+        VALUES (DEFAULT, DEFAULT, %s, %s, %s, %s, %s) RETURNING Request_ID, User_id, Restaurant, Quantity, Detail, Actions, Date"""        
+        self.cur.execute(new_order, (self.Restaurant, self.Detail, self.Quantity, self.Actions, self.Date))
         return self.cur.fetchone()
         
 
-    def get_order_by_id(self): 
+    def get_order_by_id(self, Request_ID): 
         #obtaining order for a particular user
-        order = """SELECT * FROM Orders WHERE Request_ID="{}" and User_id = "{}" """.format(self.Request_ID, self.User_id)
-        self.cur.execute(order)     
-        return self.cur.fetchone() 
+        order = ("SELECT * FROM Orders WHERE Request_ID={}".format(Request_ID))
+        self.cur.execute(order)  
+        your_order = self.cur.fetchone() 
+        # print(your_order)
+        return your_order 
+        
+
 
     def get_orders(self):
         orders = """SELECT * FROM Orders;"""
         self.cur.execute(orders)
-        all_users = self.cur.fetchall() 
-        return all_users 
+        all_orders = self.cur.fetchall() 
+        return all_orders 
+     
+        
+
 
     def get_all_orders(self, User_id):
         """Method to get all orders for a particluar user"""
@@ -49,10 +57,10 @@ class Orders():
         self.cur.execute(orders)
         return self.cur.fetchall
 
-    def update_order_status(self):
-        edit_status = ("UPDATE Orders WHERE Request_ID= '{}' AND Actions='{}' ".format(self.Request_ID,self.Actions))
+    def update_order_status(self, Request_ID, Actions):
+        edit_status = ("UPDATE Orders SET Actions = '{}' WHERE Request_ID= {}".format(Actions, Request_ID))
         self.cur.execute(edit_status)
-        return self.cur.fetchone()
+        return "Successfully updated"
 
     def delete_order(self, User_id, Request_ID):
         """Method to delete an entry"""
