@@ -7,10 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, jsonify, make_response, request, redirect
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity)
 
-from app.models import DatabaseConnection
-from app.menu import Menu, Items
-from app.orders import Orders
-from app.users import Users
+from models import DatabaseConnection
+from menu import Menu, Items
+from orders import Orders
+from users import Users
 
 
 app = Flask(__name__)
@@ -124,21 +124,18 @@ def token_header(f):
     ''' Function to get the token using the header'''
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = None
-        if 'token' in request.headers:
-            token = request.headers['token']
+        
+        token = request.headers.get('Authorization')
 
         if not token:
             return make_response(jsonify({'message': 'No auth token'}), 401)
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-            user = Users()
-            user.get_user_by_name(data['Username'])
-            username = user.get_user_by_name(user.Username)
+            print (token)
+            data = jwt.decode(token[7:], app.config['SECRET_KEY'])
             
         except:
             return make_response(jsonify({'message': 'Invalid token'}), 401)
-        return f(username, *args, **kwargs)
+        return f(*args, **kwargs)
     return decorated
 
 
@@ -213,7 +210,7 @@ def sign_in_a_user():
 
 
 @app.route('/api/v1/orders/<int:User_id>', methods=['POST'])
-# @token_header
+@token_header
 def make_new_order(User_id):
     """
     End Point to create an order
@@ -247,6 +244,7 @@ def get_all_orders():
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
+@token_header
 
 def single_order(Request_ID):
     """
@@ -266,6 +264,7 @@ def single_order(Request_ID):
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
+@token_header
 
 def update_order_status(Request_ID):
     """
@@ -289,6 +288,7 @@ def update_order_status(Request_ID):
         return make_response(jsonify({'Message': 'No such order'})), 404
 
 @app.route('/api/v1/menu', methods = ['GET'])
+@token_header
 
 def get_all_menu_items():
     """Endpoint to retrieve the menu"""
@@ -300,6 +300,7 @@ def get_all_menu_items():
     return make_response(jsonify({'menu': menu_list})), 200
 
 @app.route('/api/v1/menu', methods = ['POST'])
+@token_header
 
 def add_menu_item():
     if request.method == "POST":
