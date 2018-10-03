@@ -101,8 +101,26 @@ def process_signin_json(var):
         return error
 
 
+def process_menu_json(var):
+    ''' Function to process adding menu item info from browser'''
+    now = datetime.datetime.now()
+
+    try:
+        item = {
+            'User_id': "User_id",
+            'Restaurant': var["Restaurant"], 
+            'Detail':var['Detail'],
+            'Price': int["Price"], 
+            'Food': var["Food"]
+        }
+        return item
+
+    except:
+        error = "parameter missing"
+        return error
+
 def token_header(f):
-    ''' Function to get the token in the header'''
+    ''' Function to get the token using the header'''
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
@@ -113,13 +131,15 @@ def token_header(f):
             return make_response(jsonify({'message': 'No auth token'}), 401)
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'])
-            user = Users.add_new_user(data['Username'], data['Email'], data['Password'], data['Role'])
-            desired_user = user.get_user_by_name(data['Username'])
-
+            user = Users()
+            user.get_user_by_name(data['Username'])
+            username = user.get_user_by_name(user.Username)
+            
         except:
             return make_response(jsonify({'message': 'Invalid token'}), 401)
-        return f(desired_user, *args, **kwargs)
+        return f(username, *args, **kwargs)
     return decorated
+
 
 @app.route('/api/v1/auth/signup', methods=['POST'])
 def create_a_user():
@@ -127,20 +147,27 @@ def create_a_user():
     End Point to create an account for a user
     """
     data = process_user_json(request.json)
-
+    
     hashed_password = generate_password_hash(data['Password'], method='sha256')
     user = Users()
     user.create_user("", data['Username'], data['Email'], hashed_password, data['Role'])
 
-    username = user.get_user_by_name(data['Username'])
+    username = user.get_user_by_name(user.Username)
+    
 
     if process_user_json(data) is "parameter missing":
         return make_response(jsonify({'message': 'parameter missing'}), 400)
+    
+    try:
+        name = username[1]
+        print(name)
 
-    if username is not 'failed':
         return make_response(jsonify({'Message': 'User already exists'}), 400)
 
-    else:
+       
+
+    except:
+        
         if is_email(data['Email']) and re.match("^[A-Za-z0-9_-]*$", data['Username']):
             if user.add_new_user():
                 return make_response(jsonify({'Message': 'User created'})), 201
@@ -150,6 +177,7 @@ def create_a_user():
         
         else:
             return make_response(jsonify({'Message': 'invalid input'}), 400)
+        
 
 
 @app.route('/api/v1/auth/login', methods=['POST'])
@@ -165,36 +193,26 @@ def sign_in_a_user():
     desired_user = user.get_user_by_name(data['Username'])
     print(desired_user)
 
-    if desired_user is 'failed':
-        return make_response(jsonify({'Message': 'User does not exist'}), 400)
-    
-    else:
+    try:
+        
         if check_password_hash(desired_user[3], data['Password']):
             token = jwt.encode({'Username': desired_user[1], 'exp': datetime.datetime.utcnow() +
                                 datetime.timedelta(minutes=20)},
                                app.config['SECRET_KEY'])
             return make_response(jsonify({'Token': token.decode('UTF-8')}), 200)
-    return make_response(jsonify({'Message': 'Invalid login'}), 401)
+        return make_response(jsonify({'Message': 'Invalid login'}), 401)
+        
 
-@app.route('/api/v1/orders', methods=['GET'])
-@token_header
-def get_all_orders():
-    """
-    End Point get all orders
-    """
-
-    data = process_order_json(request.json)
-    if data == "parameter missing":
-        return make_response(jsonify({'message': 'parameter missing'}), 400)
-
-    resultlist = Orders()
-    resultlist.create_order("", "", data['Restaurant'], data['Detail'],  data['Actions'], data['Date'])
-    resultlist.get_all_orders()
-    return make_response(jsonify({'orders': resultlist})), 200
+    except:
+        
+        if desired_user is 'failed':
+            return make_response(jsonify({'Message': 'User does not exist'}), 400)
 
 
-@app.route('/api/v1/orders', methods=['POST'])
-@token_header
+
+
+@app.route('/api/v1/orders/<int:User_id>', methods=['POST'])
+# @token_header
 def make_new_order(User_id):
     """
     End Point to create an order
@@ -205,15 +223,31 @@ def make_new_order(User_id):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
 
-    order = Orders()
-    order.create_order("", "", data['Restaurant'], data['Detail'],  data['Actions'], data['Date'])
-    order.add_new_order()
+    new_order = Orders()
+    new_order.create_order(None, None, data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
+    new_order.add_new_order()
 
-    return make_response(jsonify({'Message': 'Order created'})), 201
+    return jsonify(new_order.to_json()) , 201
+
+@app.route('/api/v1/orders', methods=['GET'])
+
+def get_all_orders():
+    """
+    End Point get all orders
+    """
+
+    data = process_order_json(request.json)
+    if data == "parameter missing":
+        return make_response(jsonify({'message': 'parameter missing'}), 400)
+
+    resultlist = Orders()
+    resultlist.get_orders()
+    return make_response(jsonify({'orders': resultlist})), 200
+
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
-@token_header
+
 def single_entry(Request_ID):
     """
     End Point to get an single order
@@ -233,8 +267,8 @@ def single_entry(Request_ID):
         return make_response(jsonify({'Message': 'No orders yet'})), 404
 
 
-@app.route('/api/v1/entries/<int:entry_no>', methods=['PUT'])
-@token_header
+@app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
+
 def update_order_status(Request_ID, Actions):
     """
     End Point to update the status of an order
@@ -254,30 +288,29 @@ def update_order_status(Request_ID, Actions):
     else:
         return make_response(jsonify({'Message': 'No such order'})), 404
 
+@app.route('/api/v1/menu', methods = ['GET'])
+@jwt_required
+def get_all_menu_items():
+    """Endpoint to retrieve the menu"""
+    if request.method =="POST":
+        menu = Menu()
+        menu.get_all_items()
+        return make_response(jsonify({'orders': menu})), 200
 
-@app.route('/api/v1/orders/<int:Request_ID>', methods=['DELETE'])
-@token_header
-def delete_an_order(Request_ID):
-    """
-    End Point to delete an existing order
-    """
+@app.route('/api/v1/menu', methods = ['POST'])
 
-    order = Orders()
-    desired_order = order.get_order_by_id(data['Request_ID']) 
-    desired_order.delete_order
-  
-    return make_response(jsonify({'Message': desired_order})), 200
+def add_menu_item(Role):
+    if request.method == "POST":
+        data = process_menu_json(request.json)
+        if data == "parameter missing" or not all(data.values()):
+            return make_response(jsonify({'message': 'parameter missing'}), 400)
 
+    menu_item = Menu()
+    menu_item.create_item("", data['User_id'], data['Food'], data['Restaurant'], data['Price'], data['Detail'])
 
+    new_item = menu_item.add_new_item()
+    return make_response(jsonify({'menu': new_item})), 201
 
-@app.route('/api/v1/profile', methods=['GET'])
-@token_header
-def view_profile(User_id):
-    """
-    End Point to view user profile
-    """
-    response = database_users.get_profile(User_id)
-    return make_response(jsonify(response), 200)
 
 
    

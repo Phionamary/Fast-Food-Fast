@@ -26,12 +26,15 @@ class Users():
         
 
     def add_new_user(self):
-        print (self.Username + self.Email + self.Password + self.Role)
-        new_user = """INSERT INTO Users(User_id, Username, Email, Password, Role) 
-        VALUES (DEFAULT,%s, %s, %s, %s) RETURNING User_id, Username, Email, Password, Role;"""
-        self.cur.execute(new_user, ((self.Username,self.Email, self.Password, self.Role)))
+        print (self.Password)
+        try:
+            new_user = """INSERT INTO Users(User_id, Username, Email, Password, Role, Created_at) 
+            VALUES (DEFAULT,%s, %s, %s, %s, %s) RETURNING User_id, Username, Email, Password, Role, Created_at;"""
+            self.cur.execute(new_user, [self.Username,self.Email, self.Password, self.Role, self.Created_at])
 
-        return self.cur.fetchone()
+            return self.cur.fetchone()
+        except:
+            return "failed"
 
 
 
