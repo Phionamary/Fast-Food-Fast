@@ -51,3 +51,19 @@ wrong_test_order = {
     "Actions": "Actions",
     "Date": 2018-10-3
 }
+
+test_menu = {
+    "Item_ID": 1,
+    "Food": "Food",
+    "Restaurant": "Restaurant",
+    "Price": 5000,
+    "Detail": "Details"
+}
+
+wrong_test_menu = {
+    "Item_ID": 1,
+    "Food": "Food",
+    "Restaurant": "Restaurant",
+    "Price": 5000,
+    "Detail": "Details"
+}

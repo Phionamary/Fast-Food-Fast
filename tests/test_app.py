@@ -20,8 +20,8 @@ class all_orders_test(TestingClass):
         self.assertEqual(response.status_code, 405)
         # self.assertIn("Order created", str(response.data))
 
-    def test_mising_signup_parameter(self):
-        """Method to test missing signup parameter"""
+    def test_wrong_order(self):
+        """Method to test wrong order format"""
         response = self.create_wrong_entry()
         self.assertEqual(response.status_code, 405)
         # self.assertIn('parameter missing', str(response.data))
@@ -44,6 +44,15 @@ class all_orders_test(TestingClass):
         """Method to test general 404"""
         response = self.error_page()
         self.assertEqual(response.status_code, 404)
+
+    def test_can_create_menu_item(self):
+        response = self.create_menu_item()
+        self.assertEqual(response.status_code, 401)
+
+    def test_wrong_menu_item(self):
+        response = self.create_wrong_menu_item()
+        self.assertEqual(response.status_code, 401)
+
 
 
 

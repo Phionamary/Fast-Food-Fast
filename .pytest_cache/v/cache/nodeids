@@ -1,10 +1,12 @@
 [
+  "tests/test_app.py::all_orders_test::test_can_create_menu_item",
   "tests/test_app.py::all_orders_test::test_catching_general_404",
   "tests/test_app.py::all_orders_test::test_get_all_orders",
   "tests/test_app.py::all_orders_test::test_getting_non_existing_entry",
   "tests/test_app.py::all_orders_test::test_getting_single_order",
   "tests/test_app.py::all_orders_test::test_making_a_new_order",
-  "tests/test_app.py::all_orders_test::test_mising_signup_parameter",
+  "tests/test_app.py::all_orders_test::test_wrong_menu_item",
+  "tests/test_app.py::all_orders_test::test_wrong_order",
   "tests/test_user.py::UserTests::test_can_login_user",
   "tests/test_user.py::UserTests::test_hello_world",
   "tests/test_user.py::UserTests::test_user_already_exists",

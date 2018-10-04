@@ -12,7 +12,7 @@ database = DatabaseConnection()
 db = Users()
 cursor = db.cur
 
-from tests import (test_user_data, test_sign_in,wrong_test_user_data, wrong_test_sign_in, test_wrong_sign_in, test_order, wrong_test_order)
+from tests import (test_user_data, test_sign_in,wrong_test_user_data, wrong_test_sign_in, test_wrong_sign_in, test_order, wrong_test_order, test_menu, wrong_test_menu)
 
 
 database = DatabaseConnection()
@@ -99,9 +99,9 @@ class TestingClass(unittest.TestCase):
         return response
 
     def create_order(self):
-        "Function to test thata user can create an order"
+        """Function to test that a user can create an order"""
         test_user = app.test_client(self)
-        response = test_user.post('/api/v1/orders', data=json.dumps(test_order),content_type='application/json')
+        response = test_user.post('/api/v1/orders', headers = self.user_create_token(), data=json.dumps(test_order),content_type='application/json')
         return response
 
     def get_an_order(self):
@@ -121,6 +121,18 @@ class TestingClass(unittest.TestCase):
         """Function to test non exisitng order"""
         test_user = app.test_client(self)
         response = test_user.get("/api/v1/order/1", headers=self.user_create_token(),content_type="application/json")
+        return response
+
+    def create_menu_item(self):
+        """Function to test that a user can add an item to the menu"""
+        test_user = app.test_client(self)
+        response = test_user.post("/api/v1/menu", headers = self.user_create_token(), data = json.dumps(test_menu), content_type = "application/json")
+        return response
+
+    def create_wrong_menu_item(self):
+        "Function to test wrong menu item input"
+        test_user = app.test_client(self)
+        response = test_user.post("/api/v1/menu", headers = self.user_create_token(), data = json.dumps(wrong_test_menu), content_type = "application/json")
         return response
         
 
