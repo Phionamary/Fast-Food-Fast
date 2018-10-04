@@ -1,8 +1,9 @@
 [
-  "test_app.py::all_orders_test::test_catching_general_404",
-  "test_app.py::all_orders_test::test_get_all_orders",
-  "test_app.py::all_orders_test::test_getting_non_existing_entry",
-  "test_app.py::all_orders_test::test_getting_single_order",
-  "test_app.py::all_orders_test::test_making_a_new_order",
-  "test_app.py::all_orders_test::test_mising_signup_parameter"
+  "test_user.py::UserTests::test_can_login_user",
+  "test_user.py::UserTests::test_hello_world",
+  "test_user.py::UserTests::test_user_already_exists",
+  "test_user.py::UserTests::test_user_login_with_no_info",
+  "test_user.py::UserTests::test_user_signup",
+  "test_user.py::UserTests::test_user_signup_wrong",
+  "test_user.py::UserTests::test_wrong_user_login"
 ]

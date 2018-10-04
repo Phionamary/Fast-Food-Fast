@@ -134,6 +134,12 @@ class TestingClass(unittest.TestCase):
         test_user = app.test_client(self)
         response = test_user.post("/api/v1/menu", headers = self.user_create_token(), data = json.dumps(wrong_test_menu), content_type = "application/json")
         return response
+
+    def add_menu_authentication(self):
+        '''Function to test whether only the admin is able to add an item to the menu'''
+        test_user = app.test_client(self)
+        response = test_user.post('/api/v1/menu', eaders = self.user_create_token(), data=json.dumps(test_menu),content_type='application/json')
+        return response
         
 
 

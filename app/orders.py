@@ -3,6 +3,8 @@ import datetime
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+now = datetime.datetime.now()
+
 
 class Orders():
 
@@ -19,15 +21,15 @@ class Orders():
         self.Detail = Detail
         self.Quantity = Quantity
         self.Actions = Actions
-        self.Date = Date
+        self.Date = now.strftime("%Y-%m-%d %H:%M")
     
     def to_json(self):
         return {"Request_ID": self.Request_ID, "User_id": self.User_id, "Restaurant":self.Restaurant, "Detail": self.Detail, "Quantity": self.Quantity, "Actions": self.Actions, "Date": self.Date}
 
     def add_new_order(self):
         new_order = """INSERT INTO Orders(Request_ID, User_id, Restaurant, Detail, Quantity, Actions, Date) 
-        VALUES (DEFAULT, DEFAULT, %s, %s, %s, %s, %s) RETURNING Request_ID, User_id, Restaurant, Quantity, Detail, Actions, Date"""        
-        self.cur.execute(new_order, (self.Restaurant, self.Detail, self.Quantity, self.Actions, self.Date))
+        VALUES (DEFAULT, %s, %s, %s, %s, %s, %s) RETURNING Request_ID, User_id, Restaurant, Quantity, Detail, Actions, Date"""        
+        self.cur.execute(new_order, (self.User_id, self.Restaurant, self.Detail, self.Quantity, self.Actions, self.Date))
         return self.cur.fetchone()
         
 
@@ -39,17 +41,12 @@ class Orders():
         # print(your_order)
         return your_order 
         
-
-
     def get_orders(self):
         orders = """SELECT * FROM Orders;"""
         self.cur.execute(orders)
         all_orders = self.cur.fetchall() 
         return all_orders 
      
-        
-
-
     def get_all_orders(self, User_id):
         """Method to get all orders for a particluar user"""
         orders = ("SELECT Request_ID,Restaurant, Detail, Quantity, Actions, Date FROM Orders \
@@ -57,8 +54,8 @@ class Orders():
         self.cur.execute(orders)
         return self.cur.fetchall
 
-    def update_order_status(self, Request_ID, Actions):
-        edit_status = ("UPDATE Orders SET Actions = '{}' WHERE Request_ID= {}".format(Actions, Request_ID))
+    def update_order_status(self, Request_ID, Actions, User_id):
+        edit_status = ("UPDATE Orders SET Actions = '{}' WHERE Request_ID= {} and User_id = '{}'".format(Actions, User_id, Request_ID))
         self.cur.execute(edit_status)
         return "Successfully updated"
 

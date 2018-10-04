@@ -155,7 +155,7 @@ def token_header(f):
         return f(*args, **kwargs)
     return decorated
 
-
+    
 @app.route('/api/v1/auth/signup', methods=['POST'])
 @swag_from("../Docs/signup.yml")
 def create_a_user():
@@ -214,7 +214,7 @@ def sign_in_a_user():
     try:
         
         if check_password_hash(desired_user[3], data['Password']):
-            token = jwt.encode({'Username': desired_user[1], 'exp': datetime.datetime.utcnow() +
+            token = jwt.encode({'Username': desired_user[1],"User_id":desired_user[0], 'exp': datetime.datetime.utcnow() +
                                 datetime.timedelta(minutes=20)},
                                app.config['SECRET_KEY'])
             return make_response(jsonify({'Token': token.decode('UTF-8')}), 200)
@@ -227,43 +227,51 @@ def sign_in_a_user():
         return make_response(jsonify({'Message': 'User does not exist'}), 400)
 
 
-@app.route('/api/v1/orders/<int:User_id>', methods=['POST'])
+@app.route('/api/v1/orders', methods=['POST'])
 @swag_from("../Docs/make_order.yml")
 @token_header
-def make_new_order(User_id):
+def make_new_order():
     """
     End Point to create an order
     """
+    token = request.headers.get('Authorization')
+    if token[0] == 'B':
+        string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
+    else:
+        string = jwt.decode(token.encode('utf-8'), app.config['SECRET_KEY'])
+
     if request.method == "POST":
         data = process_order_json(request.json)
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
-        user = Users()
-        desired_user = user.get_user_by_role(User_id)
-        print ("This is the desired_user", desired_user)
-
-    if desired_user:
-        
         new_order = Orders()
-        new_order.create_order(None, "", data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
-        new_order.add_new_order()
+        # id = jwt.decode(token.encode("utf-8"), "fast-food-fast")["User_id"]
+        id = string["User_id"]
+        new_order.create_order("", id, data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
+        added_user = new_order.add_new_order()
+        print(added_user)
+        return jsonify(added_user), 201
 
-        return jsonify(new_order.to_json()) , 201
     
-    else:
-        return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
+@app.route('/api/v1/orders', methods=['GET'])
+# @swag_from("../Docs/get_orders.yml")
 
-
-@app.route('/api/v1/orders/<int:User_id>', methods=['GET'])
-
-def get_all_orders(User_id):
+def get_all_orders():
     """
     End Point get all orders
     """
 
+    token = request.headers.get('Authorization')
+    if token[0] == 'B':
+        string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
+    else:
+        string = jwt.decode(token.encode('utf-8'), app.config['SECRET_KEY'])
+
+    id = string["User_id"]
+
     user = Users()
-    desired_user = user.get_user_by_role(User_id)
+    desired_user = user.get_user_by_role(id)
     print ("This is the desired_user", desired_user)
 
     if desired_user:
@@ -279,17 +287,25 @@ def get_all_orders(User_id):
         return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
 
     
-@app.route('/api/v1/orders/<int:Request_ID>/<int:User_id>', methods=['GET'])
+@app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
 @token_header
 
-def single_order(Request_ID, User_id):
+def single_order(Request_ID):
     """
     End Point to get an single order
     """
+    
+    token = request.headers.get('Authorization')
+    if token[0] == 'B':
+        string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
+    else:
+        string = jwt.decode(token.encode('utf-8'), app.config['SECRET_KEY'])
+
+    id = string["User_id"]
 
     if request.method == "GET":
         user = Users()
-        desired_user = user.get_user_by_role(User_id)
+        desired_user = user.get_user_by_role(id)
         print ("This is the desired_user", desired_user)
 
         if desired_user:
@@ -309,26 +325,43 @@ def single_order(Request_ID, User_id):
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
 @token_header
 
-def update_order_status(Request_ID):
+def update_order_status(Request_ID, User_id):
     """
     End Point to update the status of an order
     """
+
+    token = request.headers.get('Authorization')
+    if token[0] == 'B':
+        string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
+    else:
+        string = jwt.decode(token.encode('utf-8'), app.config['SECRET_KEY'])
+
+    id = string["User_id"]
+
     data = process_edit_json(request.json)
     if data == "parameter missing":
         return make_response(jsonify({'message': 'parameter missing'}), 400)
 
-    order = Orders()
-    desired_order = order.get_order_by_id(Request_ID)
-    print (desired_order)
-    # order.update_order_status(Request_ID, data["Actions"])
+    user = Users()
+    desired_user = user.get_user_by_role(User_id)
+    print ("This is the desired_user", desired_user)
 
-    if desired_order:
-        # desired_order.update_order_status("", data['Actions'])
-        order.update_order_status(Request_ID, data["Actions"])
-        return make_response(jsonify({'Message': 'Status updated'})), 200
+    if desired_user:
+        order = Orders()
+        desired_order = order.get_order_by_id(Request_ID)
+        print (desired_order)
+        # order.update_order_status(Request_ID, data["Actions"])
+
+        if desired_order:
+            # desired_order.update_order_status("", data['Actions'])
+            order.update_order_status(Request_ID, id, data["Actions"])
+            return make_response(jsonify({'Message': 'Status updated'})), 200
+
+        else:
+            return make_response(jsonify({'Message': 'No such order'})), 404
 
     else:
-        return make_response(jsonify({'Message': 'No such order'})), 404
+            return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
 
 @app.route('/api/v1/menu', methods = ['GET'])
 @token_header
@@ -339,8 +372,18 @@ def get_all_menu_items():
     menu.get_all_items()
 
     menu_list = menu.get_all_items()
+    new_list = []
+
+    for key in range(len(menu_list)):
+        new_list.append(
+            {"Item_id": menu_list[key][0],
+            "Food": menu_list[key][1],
+            "Restaurant": menu_list[key][2],
+            "Price": menu_list[key][3],
+            "Detail": menu_list[key][4]}
+        )
     
-    return make_response(jsonify({'menu': menu_list})), 200
+    return make_response(jsonify({"Menu": new_list})), 200
 
 @app.route('/api/v1/menu/<int:User_id>', methods = ['POST'])
 @token_header
