@@ -1,0 +1,51 @@
+tags:
+ - Authenticates user
+parameters:
+ - name: body
+   in: body
+   required: true
+   type: string
+   description: Users signing in to the application
+responses:
+ 201:
+   description: Successfully logged in
+   schema:
+     id: sign in
+     type: object
+     properties:
+       Username:
+         type: string
+       Email:
+         type: string
+         default: user@example.com
+       Password:
+         type: string
+      
+      
+ 400:
+   description: Bad Request
+   schema:
+     type: object
+     properties:
+       Username:
+         type: string
+       Email:
+         type: string
+         default: user@example.com
+       Password:
+         type: string
+  
+ 401:
+   description: Unauthorized Login
+   schema:
+     type: object
+     properties:
+       Username:
+         type: string
+       Email:
+         type: string
+         default: user@example.com
+       Password:
+         type: string
+   
+ 

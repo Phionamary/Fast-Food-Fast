@@ -5,6 +5,7 @@ import jwt
 from pyisemail import is_email
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, jsonify, make_response, request, redirect
+from flasgger import Swagger, swag_from
 
 
 from models import DatabaseConnection
@@ -15,6 +16,22 @@ from users import Users
 
 app = Flask(__name__)
 
+swagger = Swagger(
+    app,
+    template={
+                "info": {
+                    "title": "Fast Food Fast",
+                    "description": "Fast-Food-Fast is a food delivery service app for a restaurant."
+                },
+
+                "securityDefinitions": {
+                    "TokenHeader": {
+                    "type": "apiKey",
+                    "name": "Authorization",
+                    "in": "header"
+            }
+        }
+    })
 #set up the JWTExtended
 app.config['SECRET_KEY'] = 'fast-food-fast'
 # jwt = JWTManager(app)
@@ -140,6 +157,7 @@ def token_header(f):
 
 
 @app.route('/api/v1/auth/signup', methods=['POST'])
+@swag_from("../Docs/signup.yml")
 def create_a_user():
     """
     End Point to create an account for a user
@@ -179,6 +197,7 @@ def create_a_user():
 
 
 @app.route('/api/v1/auth/login', methods=['POST'])
+@swag_from("../Docs/signin.yml")
 def sign_in_a_user():
     """
     End Point to log a user into their account
@@ -201,15 +220,16 @@ def sign_in_a_user():
         return make_response(jsonify({'Message': 'Invalid login'}), 401)
         
 
-    except:
-        
-        if desired_user is 'failed':
-            return make_response(jsonify({'Message': 'User does not exist'}), 400)
+    except TypeError:
+
+        # if desired_user is 'failed':
+        return make_response(jsonify({'Message': 'User does not exist'}), 400)
 
 
 
 
 @app.route('/api/v1/orders/<int:User_id>', methods=['POST'])
+@swag_from("../Docs/make_order.yml")
 @token_header
 def make_new_order(User_id):
     """

@@ -1,0 +1,44 @@
+tags:
+ - Authenticates user
+parameters:
+ - name: body
+   in: body
+   required: true
+   type: string
+   description: Users registering for the application
+responses:
+ 201:
+   description: User is created
+   schema:
+     id: sign up
+     type: object
+     properties:
+       Username:
+         type: string
+       Email:
+         type: string
+         default: user@example.com
+       Role:
+         type: string
+       Password:
+         type: string
+       Created_at:
+         type: string
+      
+ 400:
+   description: Bad Request
+   schema:
+     type: object
+     properties:
+       username:
+         type: string
+       email:
+         type: string
+         default: user@example.com
+       Role:
+         type: string
+       password:
+         type: string
+       Created_at:
+         type: string
+ 
