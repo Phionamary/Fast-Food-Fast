@@ -5,6 +5,7 @@ cache: pip
 # command to install dependencies
 
 before_script:
+  - psql -c "CREATE USER Phiona WITH PASSWORD 'Password';" -U postgres
 
   - psql -c 'CREATE DATABASE fastfoodfast;' -U postgres
 
