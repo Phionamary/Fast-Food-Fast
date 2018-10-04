@@ -41,7 +41,7 @@ class all_orders_test(TestingClass):
 
 
     def test_catching_general_404(self):
-        """Method to test genral 404"""
+        """Method to test general 404"""
         response = self.error_page()
         self.assertEqual(response.status_code, 404)
 
