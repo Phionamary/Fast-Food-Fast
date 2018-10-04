@@ -47,11 +47,11 @@ class all_orders_test(TestingClass):
 
     def test_can_create_menu_item(self):
         response = self.create_menu_item()
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 405)
 
     def test_wrong_menu_item(self):
         response = self.create_wrong_menu_item()
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 405)
 
 
 
