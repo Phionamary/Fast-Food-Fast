@@ -8,10 +8,10 @@ from flask import Flask, jsonify, make_response, request, redirect
 from flasgger import Swagger, swag_from
 
 
-from .models import DatabaseConnection
-from .menu import Menu, Items
-from .orders import Orders
-from .users import Users
+from app.models import DatabaseConnection
+from app.menu import Menu, Items
+from app.orders import Orders
+from app.users import Users
 
 
 app = Flask(__name__)
