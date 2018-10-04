@@ -54,6 +54,16 @@ class Users():
         all_users = self.cur.fetchall() 
         return all_users 
 
+    def get_user_by_role(self, Username):
+        try:
+
+            user = """SELECT * FROM Users WHERE Username = %s and Role = 'Admin';"""
+            self.cur.execute(user, [Username])
+            return self.cur.fetchall()
+
+        except:
+            return "failed"
+
 
     def verify_new_user(self, Username, Email):
         """Method to verify a user"""

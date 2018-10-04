@@ -7,10 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, jsonify, make_response, request, redirect
 
 
-from .models import DatabaseConnection
-from .menu import Menu, Items
-from .orders import Orders
-from .users import Users
+from models import DatabaseConnection
+from menu import Menu, Items
+from orders import Orders
+from users import Users
 
 
 app = Flask(__name__)
@@ -298,29 +298,30 @@ def get_all_menu_items():
     
     return make_response(jsonify({'menu': menu_list})), 200
 
-@app.route('/api/v1/menu', methods = ['POST'])
+@app.route('/api/v1/menu/<Username>', methods = ['POST'])
 @token_header
 
-def add_menu_item():
+def add_menu_item(Username):
     if request.method == "POST":
         data = process_menu_json(request.json)
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
-        if data.get("Food") == None or data.get("Restaurant") == None or data.get("Price") == None or data.get("Detail") == None:
-            return make_response(jsonify({'message': 'Invalid Request'}), 400)
+    user = Users()
+    desired_user = user.get_user_by_role(Username)
+    print(desired_user)
 
-    menu_item = Items()
-    menu_item.create_item(None, data['Food'], data['Restaurant'], data['Price'], data['Detail'])
+    if desired_user:
+        
+        menu_item = Items()
+        menu_item.create_item(None, data['Food'], data['Restaurant'], data['Price'], data['Detail'])
+        new_item = menu_item.add_new_item()
+        return "item added successfully"
+        # return jsonify(new_item.to_json()) , 201
+    
+    else:
+        return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
 
-
- 
-
-    new_item = menu_item.add_new_item()
-
-    return "item added successfully"
-
-    # return jsonify(new_item.to_json()) , 201
 
 
 if __name__ == '__main__':
