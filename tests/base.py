@@ -1,12 +1,16 @@
 """Base module with test helper functions"""
+
 import unittest
 import json
 
 from app.app import app
 from app.models import DatabaseConnection
-from app.menu import Menu
-from app.orders import Orders
 from app.users import Users
+
+
+database = DatabaseConnection()
+db = Users()
+cursor = db.cur
 
 from tests import (test_user_data, test_sign_in,wrong_test_user_data, wrong_test_sign_in, test_wrong_sign_in, test_order, wrong_test_order)
 
@@ -28,13 +32,13 @@ class TestingClass(unittest.TestCase):
         self.conn.create_users_table()
         self.conn.create_orders_table()
         self.conn.create_menu_table()
+        
+    # def tearDown(self):
 
-        # self.cur = self.conn.cursor()
-
-    def tearDown(self):
-        pass
         # clear_user_table = "DELETE from Users CASCADE"
-        # self.cur.execute(clear_user_table)
+        # cursor.execute(clear_user_table)
+        # clear_user_table = "DELETE from Users"
+        # cursor.execute(clear_user_table)
 
 
     def user_create_token(self):
@@ -103,5 +107,21 @@ class TestingClass(unittest.TestCase):
     def get_an_order(self):
         """Function to all get an order"""
         test_user = app.test_client(self)
-        response = test_user.get("/api/v1/orders", content_type="application/json")
+        response = test_user.get("/api/v1/orders", headers=self.user_create_token(), content_type="application/json")
         return response
+
+
+    def create_wrong_entry(self):
+        """Function to test wrong user order input"""
+        test_user = app.test_client(self)
+        response = test_user.post('/api/v1/orders',headers=self.user_create_token(), data=json.dumps(wrong_test_order),content_type='application/json')
+        return response
+
+    def no_existing_entry(self):
+        """Function to test non exisitng order"""
+        test_user = app.test_client(self)
+        response = test_user.get("/api/v1/order/1", headers=self.user_create_token(),content_type="application/json")
+        return response
+        
+
+

@@ -7,10 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, jsonify, make_response, request, redirect
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity)
 
-from models import DatabaseConnection
-from menu import Menu, Items
-from orders import Orders
-from users import Users
+from .models import DatabaseConnection
+from .menu import Menu, Items
+from .orders import Orders
+from .users import Users
 
 
 app = Flask(__name__)
@@ -220,7 +220,6 @@ def make_new_order(User_id):
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
-
     new_order = Orders()
     new_order.create_order(None, "", data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
     new_order.add_new_order()
@@ -308,8 +307,14 @@ def add_menu_item():
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
+        if data.get("Food") == None or data.get("Restaurant") == None or data.get("Price") == None or data.get("Detail") == None:
+            return make_response(jsonify({'message': 'Invalid Request'}), 400)
+
     menu_item = Items()
     menu_item.create_item(None, data['Food'], data['Restaurant'], data['Price'], data['Detail'])
+
+
+ 
 
     new_item = menu_item.add_new_item()
 

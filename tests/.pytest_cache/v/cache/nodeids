@@ -1,11 +1,8 @@
 [
-  "base.py::TestingClass::test_create_order",
-  "base.py::TestingClass::test_error_page",
-  "base.py::TestingClass::test_get_an_order",
-  "base.py::TestingClass::test_helo",
-  "base.py::TestingClass::test_user",
-  "base.py::TestingClass::test_user_create",
-  "base.py::TestingClass::test_user_create_token",
-  "base.py::TestingClass::test_wrong_details",
-  "base.py::TestingClass::test_wrong_user"
+  "test_app.py::all_orders_test::test_catching_general_404",
+  "test_app.py::all_orders_test::test_get_all_orders",
+  "test_app.py::all_orders_test::test_getting_non_existing_entry",
+  "test_app.py::all_orders_test::test_getting_single_order",
+  "test_app.py::all_orders_test::test_making_a_new_order",
+  "test_app.py::all_orders_test::test_mising_signup_parameter"
 ]
