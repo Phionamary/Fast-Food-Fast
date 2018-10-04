@@ -5,7 +5,7 @@ import jwt
 from pyisemail import is_email
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, jsonify, make_response, request, redirect
-from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity)
+
 
 from .models import DatabaseConnection
 from .menu import Menu, Items
