@@ -54,11 +54,11 @@ class Users():
         all_users = self.cur.fetchall() 
         return all_users 
 
-    def get_user_by_role(self, Username):
+    def get_user_by_role(self, User_id):
         try:
 
-            user = """SELECT * FROM Users WHERE Username = %s and Role = 'Admin';"""
-            self.cur.execute(user, [Username])
+            user = """SELECT * FROM Users WHERE User_id = %s and Role = 'Admin';"""
+            self.cur.execute(user, [User_id])
             return self.cur.fetchall()
 
         except:

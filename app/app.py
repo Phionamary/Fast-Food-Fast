@@ -169,6 +169,7 @@ def create_a_user():
     user.create_user("", data['Username'], data['Email'], hashed_password, data['Role'])
 
     username = user.get_user_by_name(user.Username)
+    print(username)
     
 
     if process_user_json(data) is "parameter missing":
@@ -226,8 +227,6 @@ def sign_in_a_user():
         return make_response(jsonify({'Message': 'User does not exist'}), 400)
 
 
-
-
 @app.route('/api/v1/orders/<int:User_id>', methods=['POST'])
 @swag_from("../Docs/make_order.yml")
 @token_header
@@ -240,46 +239,71 @@ def make_new_order(User_id):
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
-    new_order = Orders()
-    new_order.create_order(None, "", data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
-    new_order.add_new_order()
+        user = Users()
+        desired_user = user.get_user_by_role(User_id)
+        print ("This is the desired_user", desired_user)
 
-    return jsonify(new_order.to_json()) , 201
+    if desired_user:
+        
+        new_order = Orders()
+        new_order.create_order(None, "", data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
+        new_order.add_new_order()
 
-@app.route('/api/v1/orders', methods=['GET'])
+        return jsonify(new_order.to_json()) , 201
+    
+    else:
+        return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
 
-def get_all_orders():
+
+@app.route('/api/v1/orders/<int:User_id>', methods=['GET'])
+
+def get_all_orders(User_id):
     """
     End Point get all orders
     """
 
-    resultlist = Orders()
-    resultlist.get_orders()
+    user = Users()
+    desired_user = user.get_user_by_role(User_id)
+    print ("This is the desired_user", desired_user)
 
-    orders_list = resultlist.get_orders()
+    if desired_user:
+        
+        resultlist = Orders()
+        resultlist.get_orders()
+
+        orders_list = resultlist.get_orders()
     
-    return make_response(jsonify({'orders': orders_list})), 200
+        return make_response(jsonify({'orders': orders_list})), 200
+    
+    else:
+        return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
 
-
-
-@app.route('/api/v1/orders/<int:Request_ID>', methods=['GET'])
+    
+@app.route('/api/v1/orders/<int:Request_ID>/<int:User_id>', methods=['GET'])
 @token_header
 
-def single_order(Request_ID):
+def single_order(Request_ID, User_id):
     """
     End Point to get an single order
     """
 
     if request.method == "GET":
+        user = Users()
+        desired_user = user.get_user_by_role(User_id)
+        print ("This is the desired_user", desired_user)
 
-        your_order = Orders()
-        desired_order = your_order.get_order_by_id(Request_ID)
+        if desired_user:
+            your_order = Orders()
+            desired_order = your_order.get_order_by_id(Request_ID)
 
-        if desired_order:
-            return make_response(jsonify({'Orders': desired_order})), 200
+            if desired_order:
+                return make_response(jsonify({'Orders': desired_order})), 200
 
+            else:
+                return make_response(jsonify({'Message': 'Order does not exist'})), 404
+        
         else:
-            return make_response(jsonify({'Message': 'Order does not exist'})), 404
+            return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
 
 
 @app.route('/api/v1/orders/<int:Request_ID>', methods=['PUT'])
@@ -318,18 +342,18 @@ def get_all_menu_items():
     
     return make_response(jsonify({'menu': menu_list})), 200
 
-@app.route('/api/v1/menu/<Username>', methods = ['POST'])
+@app.route('/api/v1/menu/<int:User_id>', methods = ['POST'])
 @token_header
 
-def add_menu_item(Username):
+def add_menu_item(User_id):
     if request.method == "POST":
         data = process_menu_json(request.json)
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
     user = Users()
-    desired_user = user.get_user_by_role(Username)
-    print(desired_user)
+    desired_user = user.get_user_by_role(User_id)
+    print ("This is the desired_user", desired_user)
 
     if desired_user:
         
@@ -344,10 +368,10 @@ def add_menu_item(Username):
 
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    DatabaseConnection().create_users_table()
-    DatabaseConnection().create_menu_table()
-    DatabaseConnection().create_orders_table()
+#     # DatabaseConnection().create_users_table()
+#     # DatabaseConnection().create_menu_table()
+#     # DatabaseConnection().create_orders_table()
     
-    app.run(debug=True)
+#     app.run(debug=True)

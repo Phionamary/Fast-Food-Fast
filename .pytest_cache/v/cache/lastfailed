@@ -1,6 +1,1 @@
-{
-  "tests/test_app.py::TestingClass": true,
-  "tests/test_app.py::all_orders_test": true,
-  "tests/test_user.py::TestingClass": true,
-  "tests/test_user.py::UserTests": true
-}
+{}
