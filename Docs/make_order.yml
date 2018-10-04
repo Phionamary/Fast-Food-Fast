@@ -6,7 +6,7 @@ parameters:
    required: true
    type: string
    description: User adding an order to the order list
- - name: user_id
+ - name: User_id
    in: path
    required: true
    type: string
@@ -18,8 +18,8 @@ responses:
      id: Create order
      type: object
      properties:
-       User_id:
-         type: string
+      #  User_id:
+      #    type: string
        Restaurant:
          type: string
        Detail:
@@ -37,8 +37,8 @@ responses:
    schema:
      type: object
      properties:
-       User_id:
-         type: int
+      #  User_id:
+      #    type: int
        Restaurant:
          type: string
        Detail:
