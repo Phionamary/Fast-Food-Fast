@@ -256,7 +256,8 @@ def get_all_orders():
 
     token = request.headers.get('Authorization')
     if not token:
-        return "Invalid token"
+        return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
+        
     if token[0] == 'B':
         string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
     else:
