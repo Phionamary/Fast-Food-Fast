@@ -6,6 +6,7 @@
   "tests/test_app.py::all_orders_test::test_getting_non_existing_entry",
   "tests/test_app.py::all_orders_test::test_getting_single_order",
   "tests/test_app.py::all_orders_test::test_making_a_new_order",
+  "tests/test_app.py::all_orders_test::test_quantity_string",
   "tests/test_app.py::all_orders_test::test_wrong_menu_item",
   "tests/test_app.py::all_orders_test::test_wrong_order",
   "tests/test_user.py::UserTests::test_can_login_user",

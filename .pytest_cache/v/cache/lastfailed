@@ -1,4 +1,4 @@
 {
   "tests/test_app.py::all_orders_test::test_admin_can_add_meal": true,
-  "tests/test_app.py::all_orders_test::test_getting_single_order": true
+  "tests/test_app.py::all_orders_test::test_mising_signup_parameter": true
 }

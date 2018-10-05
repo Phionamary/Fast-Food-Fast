@@ -7,12 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, jsonify, make_response, request, redirect
 from flasgger import Swagger, swag_from
 
-
 from .models import DatabaseConnection
 from .menu import Menu, Items
 from .orders import Orders
 from .users import Users
-
 
 app = Flask(__name__)
 
@@ -32,10 +30,8 @@ swagger = Swagger(
             }
         }
     })
-#set up the JWTExtended
-app.config['SECRET_KEY'] = 'fast-food-fast'
-# jwt = JWTManager(app)
 
+app.config['SECRET_KEY'] = 'fast-food-fast'
 
 @app.route('/')
 def index():
@@ -50,7 +46,6 @@ def page_not_found(e):
     End Point to catch 404s
     """
     return make_response(jsonify({'Message': 'Page not found'})), 404
-
 
 def process_order_json(var):
     ''' Function to process json recieved from browser'''
@@ -84,7 +79,6 @@ def process_edit_json(var):
     except:
         error = "parameter missing"
         return error
-
 
 def process_user_json(var):
     ''' Function to process user signup info from browser'''
@@ -181,8 +175,6 @@ def create_a_user():
 
         return make_response(jsonify({'Message': 'User already exists'}), 400)
 
-       
-
     except:
         
         if is_email(data['Email']) and re.match("^[A-Za-z0-9_-]*$", data['Username']):
@@ -195,8 +187,6 @@ def create_a_user():
         else:
             return make_response(jsonify({'Message': 'invalid input'}), 400)
         
-
-
 @app.route('/api/v1/auth/login', methods=['POST'])
 @swag_from("../Docs/signin.yml")
 def sign_in_a_user():
@@ -235,6 +225,9 @@ def make_new_order():
     End Point to create an order
     """
     token = request.headers.get('Authorization')
+    if not token:
+        return "Invalid token"
+
     if token[0] == 'B':
         string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
     else:
@@ -246,16 +239,15 @@ def make_new_order():
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
         new_order = Orders()
-        # id = jwt.decode(token.encode("utf-8"), "fast-food-fast")["User_id"]
+
         id = string["User_id"]
         new_order.create_order("", id, data['Restaurant'], data['Detail'], data['Quantity'], data['Actions'], data['Date'])
         added_user = new_order.add_new_order()
         print(added_user)
         return jsonify(added_user), 201
-
-    
+  
 @app.route('/api/v1/orders', methods=['GET'])
-# @swag_from("../Docs/get_orders.yml")
+@swag_from("../Docs/get_orders.yml")
 
 def get_all_orders():
     """
@@ -263,6 +255,8 @@ def get_all_orders():
     """
 
     token = request.headers.get('Authorization')
+    if not token:
+        return "Invalid token"
     if token[0] == 'B':
         string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
     else:
@@ -385,7 +379,7 @@ def get_all_menu_items():
     
     return make_response(jsonify({"Menu": new_list})), 200
 
-@app.route('/api/v1/menu/<int:User_id>', methods = ['POST'])
+@app.route('/api/v1/menu', methods = ['POST'])
 @token_header
 
 def add_menu_item(User_id):
@@ -394,8 +388,16 @@ def add_menu_item(User_id):
         if data == "parameter missing" or not all(data.values()):
             return make_response(jsonify({'message': 'parameter missing'}), 400)
 
+    token = request.headers.get('Authorization')
+    if token[0] == 'B':
+        string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
+    else:
+        string = jwt.decode(token.encode('utf-8'), app.config['SECRET_KEY'])
+
+    id = string["User_id"]
+
     user = Users()
-    desired_user = user.get_user_by_role(User_id)
+    desired_user = user.get_user_by_role(id)
     print ("This is the desired_user", desired_user)
 
     if desired_user:

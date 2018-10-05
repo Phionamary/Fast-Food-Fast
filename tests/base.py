@@ -123,6 +123,12 @@ class TestingClass(unittest.TestCase):
         response = test_user.get("/api/v1/order/1", headers=self.user_create_token(),content_type="application/json")
         return response
 
+    def string_quantity(self):
+        '''This tests whether quantity cannot be a string'''
+        test_user = app.test_client(self)
+        response = test_user.post('/api/v1/orders', headers=self.user_create_token(), data=json.dumps(test_order),content_type='application/json')
+        return response
+
     def create_menu_item(self):
         """Function to test that a user can add an item to the menu"""
         test_user = app.test_client(self)

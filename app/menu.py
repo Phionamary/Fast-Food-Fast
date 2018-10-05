@@ -31,12 +31,6 @@ class Items:
         print ("added")
         return self.curr.fetchone
 
-    def get_item_by_id(self):
-        item = """SELECT FROM Menu where Item_ID = "{0}" """.format(self.Item_ID)
-        self.cur.execute(item)
-        single_item = self.cur.fetchone() 
-        return single_item
-
 
     def get_all_items(self):
         try:

@@ -1,11 +1,20 @@
 tags:
  - Orders
 parameters:
+ - name: Authorization
+   in: header
+   name: Authorization
+   description: Allows logged in user to make an order
+   required: true
+   type: string
+   schema:
+   id: bearer
  - name: body
    in: body
    required: true
    type: string
    description: User adding an order to the order list
+
    
 responses:
  201:

@@ -36,8 +36,6 @@ class Users():
         except:
             return "failed"
 
-
-
     def get_user_by_name(self, Username):
         try:
             user = """SELECT * FROM Users WHERE Username = %s """
@@ -79,16 +77,6 @@ class Users():
         signin = ("SELECT * FROM users WHERE User_id='{}'"
                   .format(self.User_id))
         self.cur.execute(signin)
-        user = self.cur.fetchall()
-        return user
-
-    def get_profile(self, User_id):
-        """Method to get user profile"""
-        profile = ("select Username,Email,Role,Created_at(Users.User_id)\
-                   from Users left join Orders on Orders.User_id=Users.User_id\
-                   where Users.User_id={} group by Users.User_id"
-                   .format(self.User_id))
-        self.cur.execute(profile)
         user = self.cur.fetchall()
         return user
 

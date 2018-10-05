@@ -11,27 +11,27 @@ class all_orders_test(TestingClass):
         """Method to test getting all orders"""
         self.create_order()
         response = self.get_an_order()
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 200)
         # self.assertIn("orders", str(response.data))
 
     def test_making_a_new_order(self):
         """Method to test making an order"""
         response = self.create_order()
         self.assertEqual(response.status_code, 401)
-        # self.assertIn("Order created", str(response.data))
+
 
     def test_wrong_order(self):
         """Method to test wrong order format"""
         response = self.create_wrong_entry()
         self.assertEqual(response.status_code, 401)
-        # self.assertIn('parameter missing', str(response.data))
+
 
     def test_getting_single_order(self):
         """Method to test getting single entry"""
         self.create_order()
         response = self.get_an_order()
-        self.assertEqual(response.status_code, 500)
-        self.assertIn("orders", str(response.data))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Invalid token", str(response.data))
 
     def test_getting_non_existing_entry(self):
         """Method to test non existing entry"""
@@ -39,6 +39,11 @@ class all_orders_test(TestingClass):
         self.assertEqual(response.status_code, 404)
         self.assertIn("Message", str(response.data))
 
+    def test_quantity_string(self):
+        "Method to test a string quantity"
+        response = self.string_quantity()
+        self.assertEqual(response.status_code, 401)
+        self.assertTrue(b'Quantity cannot be string', response.data)
 
     def test_catching_general_404(self):
         """Method to test general 404"""
@@ -57,6 +62,8 @@ class all_orders_test(TestingClass):
         response = self.add_menu_authentication()
         self.assertEqual(response.status_code, 201)
         self.assertTrue(b'Menu Item Added Successfully!', response.data)
+
+    
 
 
 

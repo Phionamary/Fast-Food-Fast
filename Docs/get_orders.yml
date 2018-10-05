@@ -1,0 +1,13 @@
+tags:
+ - Orders
+   
+responses:
+ 200:
+   description: Successfully retrieved list
+   
+ 400:
+   description: Unauthorized attempt 
+
+
+   
+ 

@@ -59,12 +59,6 @@ class Orders():
         self.cur.execute(edit_status)
         return "Successfully updated"
 
-    def delete_order(self, User_id, Request_ID):
-        """Method to delete an entry"""
-        delete = ("DELETE FROM Orders WHERE Request_ID={} and \
-                  User_id='{}'".format(
-                      self.Request_ID, self.User_id))
-        self.cur.execute(delete)
-        return 'Order Successfully deleted'
+    
 
 
