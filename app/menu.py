@@ -13,7 +13,6 @@ class Items:
     cur = None  
     def create_item(self, Item_ID, Food, Restaurant, Price, Detail):
         self.Item_ID = Item_ID
-        # self.User_id = User_id
         self.Food = Food
         self.Restaurant = Restaurant
         self.Price = Price
@@ -39,7 +38,6 @@ class Items:
             all_items = """SELECT * FROM Menu """
             self.curr.execute(all_items)
             items = self.curr.fetchall() 
-            # print(items)
             return items
 
         except:

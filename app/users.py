@@ -10,12 +10,8 @@ class Users():
     def __init__(self):
         self.conn = psycopg2.connect(host="localhost", port="5434", database="fastfoodfast", user="postgres")
         self.conn.autocommit = True
-
-        # def create_cursor(self):
         self.cur = self.conn.cursor()
-        # return self.cur
-
-    
+  
     def create_user(self, User_id, Username, Email, Password, Role):
         self.User_id = User_id
         self.Username = Username

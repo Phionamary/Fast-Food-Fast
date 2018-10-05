@@ -48,7 +48,7 @@ def page_not_found(e):
     return make_response(jsonify({'Message': 'Page not found'})), 404
 
 def process_order_json(var):
-    ''' Function to process json recieved from browser'''
+    ''' Function to process adding an order from browser'''
     try:
         now = datetime.datetime.now()
 
@@ -81,7 +81,7 @@ def process_edit_json(var):
         return error
 
 def process_user_json(var):
-    ''' Function to process user signup info from browser'''
+    ''' Function to process sign up info from browser'''
     now = datetime.datetime.now()
 
     try:
@@ -99,7 +99,7 @@ def process_user_json(var):
 
 
 def process_signin_json(var):
-    ''' Function to process user login info from browser'''
+    ''' Function to process login info from browser'''
     try:
         user = {
             'Email': var['Email'],
@@ -165,7 +165,6 @@ def create_a_user():
     username = user.get_user_by_name(user.Username)
     print(username)
     
-
     if process_user_json(data) is "parameter missing":
         return make_response(jsonify({'message': 'parameter missing'}), 400)
     
@@ -212,8 +211,6 @@ def sign_in_a_user():
         
 
     except TypeError:
-
-        # if desired_user is 'failed':
         return make_response(jsonify({'Message': 'User does not exist'}), 400)
 
 
@@ -257,7 +254,7 @@ def get_all_orders():
     token = request.headers.get('Authorization')
     if not token:
         return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
-        
+
     if token[0] == 'B':
         string = jwt.decode(token[7:].encode('utf-8'), app.config['SECRET_KEY'])
     else:
@@ -345,10 +342,8 @@ def update_order_status(Request_ID, User_id):
         order = Orders()
         desired_order = order.get_order_by_id(Request_ID)
         print (desired_order)
-        # order.update_order_status(Request_ID, data["Actions"])
 
         if desired_order:
-            # desired_order.update_order_status("", data['Actions'])
             order.update_order_status(Request_ID, id, data["Actions"])
             return make_response(jsonify({'Message': 'Status updated'})), 200
 
@@ -407,17 +402,7 @@ def add_menu_item(User_id):
         menu_item.create_item(None, data['Food'], data['Restaurant'], data['Price'], data['Detail'])
         new_item = menu_item.add_new_item()
         return "item added successfully"
-        # return jsonify(new_item.to_json()) , 201
     
     else:
         return make_response(jsonify({'Message': "Unauthorized attempt"}), 400)
 
-
-
-# if __name__ == '__main__':
-
-#     # DatabaseConnection().create_users_table()
-#     # DatabaseConnection().create_menu_table()
-#     # DatabaseConnection().create_orders_table()
-    
-#     app.run(debug=True)

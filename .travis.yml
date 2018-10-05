@@ -8,8 +8,6 @@ services:
 - postgresql 
 
 before_script:
-  # - psql -c "CREATE USER postgres;" 
-
   - psql -c 'CREATE DATABASE fastfoodfast;' -U postgres
 
 install:
@@ -22,7 +20,6 @@ install:
 script:
   - pytest tests  --cov=app --cov-report term-missing tests/
  
-
 #for coveralls
 after_success:
   - coveralls

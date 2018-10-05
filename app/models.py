@@ -4,12 +4,8 @@ class DatabaseConnection():
     
     def __init__(self):
         self.conn = psycopg2.connect(host="localhost", port="5434", database="fastfoodfast", user="postgres")
-        
-    # def create_cursor(self):
         self.cur = self.conn.cursor()
-        # return self.cur
-        
-        
+         
     def create_users_table(self):
         Users = """CREATE TABLE IF NOT EXISTS Users(User_id serial PRIMARY KEY, 
         Username varchar (50) NOT NULL, 

@@ -12,19 +12,16 @@ class all_orders_test(TestingClass):
         self.create_order()
         response = self.get_an_order()
         self.assertEqual(response.status_code, 200)
-        # self.assertIn("orders", str(response.data))
 
     def test_making_a_new_order(self):
         """Method to test making an order"""
         response = self.create_order()
         self.assertEqual(response.status_code, 401)
 
-
     def test_wrong_order(self):
         """Method to test wrong order format"""
         response = self.create_wrong_entry()
         self.assertEqual(response.status_code, 401)
-
 
     def test_getting_single_order(self):
         """Method to test getting single entry"""

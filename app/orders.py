@@ -13,7 +13,6 @@ class Orders():
         self.conn.autocommit = True
         self.cur = self.conn.cursor(cursor_factory = RealDictCursor)
 
-
     def create_order(self, Request_ID, User_id, Restaurant, Detail, Quantity, Actions, Date):
         self.Request_ID = Request_ID
         self.User_id = User_id
@@ -38,7 +37,6 @@ class Orders():
         order = ("SELECT * FROM Orders WHERE Request_ID={}".format(Request_ID))
         self.cur.execute(order)  
         your_order = self.cur.fetchone() 
-        # print(your_order)
         return your_order 
         
     def get_orders(self):

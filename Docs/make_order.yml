@@ -13,9 +13,7 @@ parameters:
    in: body
    required: true
    type: string
-   description: User adding an order to the order list
-
-   
+   description: User adding an order to the order list 
 responses:
  201:
    description: Successfully added order
